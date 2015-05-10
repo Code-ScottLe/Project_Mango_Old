@@ -24,6 +24,7 @@ namespace Mango_Engine
         //Fields
         protected string _base_url;
         protected string _url;
+        protected string _file_name;
         protected Encoding _encoding_type;
         #endregion
 
@@ -55,6 +56,20 @@ namespace Mango_Engine
                 _url = value;
             }
         }
+
+        public string current_file_name
+        {
+            get
+            {
+                return _file_name;
+            }
+
+            set
+            {
+                _file_name = value;
+            }
+        }
+
 
         public Encoding encoding_type
         {
@@ -161,6 +176,22 @@ namespace Mango_Engine
         abstract public string get_url();
 
         abstract public string get_image_url();
+
+        protected virtual string get_file_name(string src_url)
+        {
+           //Parse the URl and give back the original file name.
+            //Strat: Scan from the bottom up for the last /.
+            int last_slash_index = src_url.LastIndexOf('/');
+
+            //create a substr without that last slash
+            string filename = src_url.Substring(last_slash_index + 1);
+
+            //set that to filename
+            _file_name = filename;
+
+            //return a copy of that.
+            return filename;
+        }
     }
 
 #endregion

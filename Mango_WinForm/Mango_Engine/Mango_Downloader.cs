@@ -75,7 +75,18 @@ namespace Mango_Engine
             //Set the encoding
             my_client.Encoding = source_html.encoding_type;
 
-           
+           //status of downloading
+            bool not_halt = true;
+
+            do
+            {
+                //Download the current page
+                my_client.DownloadFile(source_html.get_image_url(), _save_to + source_html.current_file_name);
+
+                //try to get the next page
+                not_halt = source_html.next_page();
+
+            } while (not_halt == true);
 
 
 

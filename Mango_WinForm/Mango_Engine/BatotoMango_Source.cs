@@ -54,6 +54,7 @@ namespace Mango_Engine
             //Base init.
             base.init();
 
+            /*
             //Get the data from the web about the number of pages for the current eposide.
             //Get the current path of the software (for a temp html file)
             var current_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -116,7 +117,7 @@ namespace Mango_Engine
                 //assign to the page number.
                 pages = number_of_pages;
             }
-
+            */
         }
         public override bool next_page()
         {
@@ -192,7 +193,7 @@ namespace Mango_Engine
                 return false;
             }
 
-            //set the url to the next page.
+            //set the url to the next page. (BUG CHECK)
             current_url = next_page.Attributes["value"].Value;
 
             //Done parsing the temp file, delete it.
@@ -258,6 +259,8 @@ namespace Mango_Engine
             string src =  comic_node.Attributes["src"].Value;
 
             File.Delete(temp_html);
+
+            get_file_name(src);
 
             return src;
         }

@@ -19,12 +19,9 @@ namespace Debug_Console_Mango
 
             BatotoMango_Source my_source = new BatotoMango_Source("http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans");
 
-            Console.WriteLine("Current Source: {0} ", my_source.current_url);
+            Mango_Downloader my_downloader = new Mango_Downloader(my_source, "D:\\Test\\");
 
-            my_source.next_page();
-
-            Console.Write("Next Source: {0}", my_source.current_url);
-
+            my_downloader.start();
         }
     }
 }
