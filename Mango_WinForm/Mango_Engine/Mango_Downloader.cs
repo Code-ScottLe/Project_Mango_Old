@@ -10,12 +10,15 @@ namespace Mango_Engine
 {
     public class Mango_Downloader
     {
+        #region Fields
         //Fields
-        private string _html;
+        private Mango_Source _html;
         private string _save_to;
+        #endregion
 
+        #region Properties
         //Properties
-        public string source_html
+        public Mango_Source source_html
         {
             get
             {
@@ -40,7 +43,9 @@ namespace Mango_Engine
                 _save_to = value;
             }
         }
+        #endregion
 
+        #region Constructor
         //Contructors
         Mango_Downloader()
         {
@@ -49,14 +54,16 @@ namespace Mango_Engine
 
         }
 
-        public Mango_Downloader(string html, string local_uri)
+        public Mango_Downloader(Mango_Source html, string local_uri)
         {
             //Create a downloader for Mango, accept in a string of HTML (source) and the local path (where to save)
             source_html = html;
             local_saving_path = local_uri;
         }
 
+        #endregion
 
+        #region Methods
         // Methods
         public bool start()
         {
@@ -65,12 +72,18 @@ namespace Mango_Engine
             //Initialize the WebClient
             WebClient my_client = new WebClient();
 
-            //
+            //Set the encoding
+            my_client.Encoding = source_html.encoding_type;
+
+           
 
 
 
             //all good, return true
             return true;
         }
+
+
+        #endregion
     }
 }

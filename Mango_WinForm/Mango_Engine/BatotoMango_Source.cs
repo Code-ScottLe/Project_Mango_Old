@@ -14,10 +14,23 @@ namespace Mango_Engine
     {
         #region Fields
         //Fields
+        private int _pages;
         #endregion
 
         #region Properties
         //Properties
+        public int pages
+        {
+            get
+            {
+                return _pages;
+            }
+
+            set
+            {
+                _pages = value;
+            }
+        }
         #endregion
 
         #region Constructors
@@ -35,6 +48,76 @@ namespace Mango_Engine
 
         #region Methods
         //Methods
+
+        protected override void init()
+        {
+            //Base init.
+            base.init();
+
+            //Get the data from the web about the number of pages for the current eposide.
+            //Get the current path of the software (for a temp html file)
+            var current_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string temp_html = current_path + "temp_html.html";
+
+            //download the webpage and save as HTML.
+            WebClient my_client = new WebClient();
+            my_client.Encoding = encoding_type;
+            my_client.DownloadFile(current_url, temp_html);
+
+            //Done with downloading, dispose the WebClient
+            my_client.Dispose();
+
+            //Load up the temp html file.
+            HtmlDocument my_doc = new HtmlDocument();
+            my_doc.Load(temp_html);
+
+            //Attemp to search for the page_select combo box, which contain all the files.
+            HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("//select");
+            HtmlNode page_select_node = null;
+
+            //Search among the select boxes
+            foreach (HtmlNode select_node in select_nodes)
+            {
+                //if exists the field ID
+                if (!select_node.Attributes.Contains("id"))
+                {
+                    continue;
+                }
+
+                //Where ID = "page_select"
+                if (select_node.Attributes["id"].Value == "page_select")
+                {
+                    //this is the one.
+                    page_select_node = select_node;
+                    break;
+                }
+            }
+
+            if(page_select_node == null)
+            {
+                //something is off.
+                pages = -1;
+            }
+
+            else
+            {
+                //all okay.
+                //Get the last text node inside this select node. 
+                int last_node_index = page_select_node.ChildNodes.IndexOf(page_select_node.LastChild) - 1;
+                HtmlNode last_node = page_select_node.ChildNodes[last_node_index];
+
+                //get the text value.
+                string last_page = last_node.InnerText;
+
+                //convert to from str to number for the number of pages.
+                int number_of_pages = -1;
+                Int32.TryParse(last_page.Substring(5), out number_of_pages);
+
+                //assign to the page number.
+                pages = number_of_pages;
+            }
+
+        }
         public override bool next_page()
         {
             //modify the URL to get to the next page.
@@ -122,6 +205,61 @@ namespace Mango_Engine
         public override string get_url()
         {
             return current_url;
+        }
+
+        public override string get_image_url()
+        {
+            //parse the html file and get the picture url out.
+
+            //Get the current path of the software (for a temp html file)
+            var current_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string temp_html = current_path + "temp_html.html";
+
+            //download the webpage and save as HTML.
+            WebClient my_client = new WebClient();
+            my_client.Encoding = encoding_type;
+            my_client.DownloadFile(current_url, temp_html);
+
+            //Done with downloading, dispose the WebClient
+            my_client.Dispose();
+
+            //Load up the temp html file.
+            HtmlDocument my_doc = new HtmlDocument();
+            my_doc.Load(temp_html);
+
+            //Batoto use the <img id="comic_page" ... > to hold the source.
+            //Search among all the img tags for the correct node.
+            HtmlNode comic_node = null;
+
+            foreach (HtmlNode img_node in my_doc.DocumentNode.SelectNodes("//img"))
+            {
+                //make sure the attribute id is valid.
+                if(!img_node.Attributes.Contains("id"))
+                {
+                    continue;
+                }
+
+                if(img_node.Attributes["id"].Value == "comic_page")
+                {
+                    //found it.
+                    comic_node = img_node;
+                    break;
+                }
+            }
+
+            if (comic_node == null)
+            {
+                //null still, probably error.
+                return string.Empty;
+            }
+
+            //if reach here, mean the file source node was found.
+            //pulling out the src file url and return it.
+            string src =  comic_node.Attributes["src"].Value;
+
+            File.Delete(temp_html);
+
+            return src;
         }
 
         #endregion

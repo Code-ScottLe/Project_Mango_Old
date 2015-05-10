@@ -12,6 +12,8 @@ namespace Mango_Engine
         bool next_page();
 
         string get_url();
+
+        string get_image_url();
     }
 
     public abstract class  Mango_Source : M_Source
@@ -20,9 +22,9 @@ namespace Mango_Engine
 
         #region Fields
         //Fields
-        private string _base_url;
-        private string _url;
-        private Encoding _encoding_type;
+        protected string _base_url;
+        protected string _url;
+        protected Encoding _encoding_type;
         #endregion
 
         #region Properties
@@ -157,6 +159,8 @@ namespace Mango_Engine
         abstract public bool next_page();
 
         abstract public string get_url();
+
+        abstract public string get_image_url();
     }
 
 #endregion
