@@ -41,7 +41,7 @@ namespace Mango_Engine
             }
         }
 
-        public string url
+        public string current_url
         {
             get
             {

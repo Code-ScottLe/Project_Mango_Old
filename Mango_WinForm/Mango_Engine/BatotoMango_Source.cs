@@ -12,10 +12,15 @@ namespace Mango_Engine
 {
     public class BatotoMango_Source : Mango_Source
     {
+        #region Fields
         //Fields
+        #endregion
 
+        #region Properties
         //Properties
+        #endregion
 
+        #region Constructors
         //Constructors
         BatotoMango_Source()
         {
@@ -26,7 +31,9 @@ namespace Mango_Engine
         {
             //Create a new instace of BatotoMango_Source, an object represent bato.to source for mango.
         }
+        #endregion
 
+        #region Methods
         //Methods
         public override bool next_page()
         {
@@ -39,7 +46,7 @@ namespace Mango_Engine
             //download the webpage and save as HTML.
             WebClient my_client = new WebClient();
             my_client.Encoding = encoding_type;
-            my_client.DownloadFile(url, temp_html);
+            my_client.DownloadFile(current_url, temp_html);
 
             //Done with downloading, dispose the WebClient
             my_client.Dispose();
@@ -91,7 +98,7 @@ namespace Mango_Engine
                 if(option_node.Attributes["selected"].Value == "selected")
                 {
                     //matched. Get the next guy 
-                    next_page = option_node.NextSibling;
+                    next_page = page_select_node.ChildNodes[page_select_node.ChildNodes.IndexOf(option_node) + 2];
                     break;
                 }
             }
@@ -103,7 +110,10 @@ namespace Mango_Engine
             }
 
             //set the url to the next page.
-            url = next_page.Attributes["value"].Value;
+            current_url = next_page.Attributes["value"].Value;
+
+            //Done parsing the temp file, delete it.
+            File.Delete(temp_html);
 
             //everything is good.
             return true;
@@ -111,7 +121,10 @@ namespace Mango_Engine
 
         public override string get_url()
         {
-            return url;
+            return current_url;
         }
+
+        #endregion
+
     }
 }

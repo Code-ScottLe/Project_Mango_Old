@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using HtmlAgilityPack;
+using Mango_Engine;
 
 namespace Debug_Console_Mango
 {
@@ -13,47 +14,16 @@ namespace Debug_Console_Mango
     {
         static void Main(string[] args)
         {
-            /*
-            //sample URL:http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans
-            WebClient my_client = new WebClient();
-
-           //download the sample string.
-            var myfile = File.Open("D:\\Test.txt", FileMode.OpenOrCreate);
-
-            my_client.Encoding = Encoding.UTF8;
-
-            var str = my_client.DownloadString("http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans");
-
-            StreamWriter my_writer = new StreamWriter(myfile);
-
-            my_writer.Write(str);
-
-            my_writer.Flush();
-            my_writer.Close();
-           */
-
-            HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load("D:\\Test.txt");
-
-            HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("//select");
-
-            foreach(HtmlNode select_node in select_nodes)
-            {
-                if(!select_node.Attributes.Contains("id"))
-                {
-                    continue;
-                }
-
-                if (select_node.Attributes["id"].Value == "page_select")
-                {
-                    //this is the one.
-                    foreach(HtmlAttribute attr in select_node.Attributes)
-                    {
-                        Console.WriteLine("{0}  ==> {1}", attr.Name, attr.Value);
-                    }
-                }
-            }
             
+            //sample URL:http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans
+
+            BatotoMango_Source my_source = new BatotoMango_Source("http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans");
+
+            Console.WriteLine("Current Source: {0} ", my_source.current_url);
+
+            my_source.next_page();
+
+            Console.Write("Next Source: {0}", my_source.current_url);
 
         }
     }
