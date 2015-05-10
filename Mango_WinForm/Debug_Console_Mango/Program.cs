@@ -35,11 +35,23 @@ namespace Debug_Console_Mango
             HtmlDocument my_doc = new HtmlDocument();
             my_doc.Load("D:\\Test.txt");
 
-            HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("select");
+            HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("//select");
 
             foreach(HtmlNode select_node in select_nodes)
             {
+                if(!select_node.Attributes.Contains("id"))
+                {
+                    continue;
+                }
 
+                if (select_node.Attributes["id"].Value == "page_select")
+                {
+                    //this is the one.
+                    foreach(HtmlAttribute attr in select_node.Attributes)
+                    {
+                        Console.WriteLine("{0}  ==> {1}", attr.Name, attr.Value);
+                    }
+                }
             }
             
 
