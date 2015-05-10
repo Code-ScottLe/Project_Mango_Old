@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.IO;
+using HtmlAgilityPack;
 
 namespace Debug_Console_Mango
 {
@@ -11,31 +13,34 @@ namespace Debug_Console_Mango
     {
         static void Main(string[] args)
         {
+            /*
             //sample URL:http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans
             WebClient my_client = new WebClient();
 
-            //try to get a response.
-            var response = my_client.DownloadString("http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans");
+           //download the sample string.
+            var myfile = File.Open("D:\\Test.txt", FileMode.OpenOrCreate);
 
-            WebHeaderCollection response_encode = my_client.ResponseHeaders;
+            my_client.Encoding = Encoding.UTF8;
 
-            /*
-            for (int i = 0; i < response_encode.Count;i++)
+            var str = my_client.DownloadString("http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans");
+
+            StreamWriter my_writer = new StreamWriter(myfile);
+
+            my_writer.Write(str);
+
+            my_writer.Flush();
+            my_writer.Close();
+           */
+
+            HtmlDocument my_doc = new HtmlDocument();
+            my_doc.Load("D:\\Test.txt");
+
+            HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("select");
+
+            foreach(HtmlNode select_node in select_nodes)
             {
-                Console.Write(response_encode.GetKey(i));
-                Console.Write(" :  ");
-                Console.WriteLine(response_encode[i]);
+
             }
-             */
-
-            string Content_Type = response_encode["Content-Type"];
-            Console.WriteLine(Content_Type);
-            Console.WriteLine(Content_Type.IndexOf("charset="));
-
-            string trim = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
-
-            Console.WriteLine(trim);
-
             
 
         }

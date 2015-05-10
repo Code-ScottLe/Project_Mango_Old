@@ -7,14 +7,14 @@ using System.Net;
 
 namespace Mango_Engine
 {
-    interface M_Source
+    public interface M_Source
     {
         bool next_page();
 
         string get_url();
     }
 
-    abstract class  Mango_Source : M_Source
+    public abstract class  Mango_Source : M_Source
     {
         //Represent a source for Mango.
 
@@ -70,7 +70,7 @@ namespace Mango_Engine
 
         #region Constructor
         //Constructor
-        Mango_Source()
+        protected Mango_Source()
         {
             //default constructor, hidden.
         }
@@ -113,7 +113,7 @@ namespace Mango_Engine
 
                 string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
 
-                Encoding encode = this.string_to_encoding(encoding_str);
+                Encoding encode = string_to_encoding(encoding_str);
 
                 //encode was converted. set to encoding type
                 _encoding_type = encode;
@@ -127,7 +127,7 @@ namespace Mango_Engine
 
         }
 
-        public Encoding string_to_encoding(string encoding_str)
+        public static Encoding string_to_encoding(string encoding_str)
         {
             if(encoding_str == "UTF-8")
             {
