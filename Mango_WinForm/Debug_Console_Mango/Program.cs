@@ -19,12 +19,22 @@ namespace Debug_Console_Mango
 
             WebHeaderCollection response_encode = my_client.ResponseHeaders;
 
+            /*
             for (int i = 0; i < response_encode.Count;i++)
             {
                 Console.Write(response_encode.GetKey(i));
                 Console.Write(" :  ");
                 Console.WriteLine(response_encode[i]);
             }
+             */
+
+            string Content_Type = response_encode["Content-Type"];
+            Console.WriteLine(Content_Type);
+            Console.WriteLine(Content_Type.IndexOf("charset="));
+
+            string trim = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
+
+            Console.WriteLine(trim);
 
             
 
