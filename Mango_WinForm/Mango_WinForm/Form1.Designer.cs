@@ -35,6 +35,10 @@
             this.SaveTo_TextBox = new System.Windows.Forms.TextBox();
             this.SaveTo_Label = new System.Windows.Forms.Label();
             this.SaveTo_Button = new System.Windows.Forms.Button();
+            this.DetailedProgress_Box = new System.Windows.Forms.TextBox();
+            this.DetailedProgress_TextBox = new System.Windows.Forms.Label();
+            this.Download_Button = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // SourceUrl_Box
@@ -85,7 +89,7 @@
             // SaveTo_Label
             // 
             this.SaveTo_Label.AutoSize = true;
-            this.SaveTo_Label.Location = new System.Drawing.Point(16, 120);
+            this.SaveTo_Label.Location = new System.Drawing.Point(12, 113);
             this.SaveTo_Label.Name = "SaveTo_Label";
             this.SaveTo_Label.Size = new System.Drawing.Size(102, 21);
             this.SaveTo_Label.TabIndex = 5;
@@ -102,11 +106,55 @@
             this.SaveTo_Button.UseVisualStyleBackColor = true;
             this.SaveTo_Button.Click += new System.EventHandler(this.SaveTo_Button_Click);
             // 
+            // DetailedProgress_Box
+            // 
+            this.DetailedProgress_Box.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DetailedProgress_Box.Location = new System.Drawing.Point(13, 231);
+            this.DetailedProgress_Box.Multiline = true;
+            this.DetailedProgress_Box.Name = "DetailedProgress_Box";
+            this.DetailedProgress_Box.ReadOnly = true;
+            this.DetailedProgress_Box.Size = new System.Drawing.Size(977, 336);
+            this.DetailedProgress_Box.TabIndex = 7;
+            // 
+            // DetailedProgress_TextBox
+            // 
+            this.DetailedProgress_TextBox.AutoSize = true;
+            this.DetailedProgress_TextBox.Location = new System.Drawing.Point(12, 197);
+            this.DetailedProgress_TextBox.Name = "DetailedProgress_TextBox";
+            this.DetailedProgress_TextBox.Size = new System.Drawing.Size(132, 21);
+            this.DetailedProgress_TextBox.TabIndex = 8;
+            this.DetailedProgress_TextBox.Text = "Detailed Progress";
+            // 
+            // Download_Button
+            // 
+            this.Download_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Download_Button.Location = new System.Drawing.Point(13, 596);
+            this.Download_Button.Name = "Download_Button";
+            this.Download_Button.Size = new System.Drawing.Size(403, 36);
+            this.Download_Button.TabIndex = 9;
+            this.Download_Button.Text = "Download";
+            this.Download_Button.UseVisualStyleBackColor = true;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(624, 596);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(366, 36);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1002, 644);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.Download_Button);
+            this.Controls.Add(this.DetailedProgress_TextBox);
+            this.Controls.Add(this.DetailedProgress_Box);
             this.Controls.Add(this.SaveTo_Button);
             this.Controls.Add(this.SaveTo_Label);
             this.Controls.Add(this.SaveTo_TextBox);
@@ -132,6 +180,10 @@
         private System.Windows.Forms.TextBox SaveTo_TextBox;
         private System.Windows.Forms.Label SaveTo_Label;
         private System.Windows.Forms.Button SaveTo_Button;
+        private System.Windows.Forms.TextBox DetailedProgress_Box;
+        private System.Windows.Forms.Label DetailedProgress_TextBox;
+        private System.Windows.Forms.Button Download_Button;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
