@@ -140,6 +140,11 @@ namespace Mango_Engine
             my_doc.Load(temp_html);
 
             //Attemp to search for the page_select combo box, which contain all the files.
+            /*Example:
+             * <select name="page_select" id="page_select" onchange="window.location=this.value;">
+             * .... values
+             * </select>
+             * */
             HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("//select");
             HtmlNode page_select_node = null;
 
@@ -170,8 +175,16 @@ namespace Mango_Engine
             //if reach here, mean the correct node was found.
             HtmlNode next_page = null;
 
-            //Now search through all the options attribute and find the one that is marked as "selected"
-            foreach(HtmlNode option_node in page_select_node.ChildNodes)
+            //Now search through all the options attribute and find the one that is marked as "selected" (which is the current page)
+            /*
+             * Example:
+             * <select name="page_select" id="page_select" onchange="window.location=this.value;">\
+             *       <option value="http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans/1" selected="selected">page 1</option>
+             * </select>
+             * 
+             * */
+            HtmlNodeCollection option_nodes = page_select_node.SelectNodes("option");
+            foreach (HtmlNode option_node in option_nodes)
             {
                 if(!option_node.Attributes.Contains("selected"))
                 {
@@ -181,8 +194,13 @@ namespace Mango_Engine
 
                 if(option_node.Attributes["selected"].Value == "selected")
                 {
-                    //matched. Get the next guy 
-                    next_page = page_select_node.ChildNodes[page_select_node.ChildNodes.IndexOf(option_node) + 2];
+                    //matched. 
+                    if(option_node != option_nodes.Last())
+                    {
+                        //Get the next guy if only the current node is not the last node.
+                        next_page = option_nodes[option_nodes.IndexOf(option_node) + 1];                     
+                    }
+
                     break;
                 }
             }
