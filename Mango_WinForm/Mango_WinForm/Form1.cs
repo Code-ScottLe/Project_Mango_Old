@@ -47,5 +47,11 @@ namespace Mango_WinForm
             await my_downloader.startAsync();
             progressBar1.Value = 100;
         }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            //About the program.
+            (new Form2()).Show();
+        }
     }
 }
