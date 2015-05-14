@@ -136,6 +136,7 @@
             this.Download_Button.TabIndex = 9;
             this.Download_Button.Text = "Download";
             this.Download_Button.UseVisualStyleBackColor = true;
+            this.Download_Button.Click += new System.EventHandler(this.Download_Button_Click);
             // 
             // progressBar1
             // 

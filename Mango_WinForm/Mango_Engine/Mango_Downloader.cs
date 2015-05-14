@@ -94,6 +94,12 @@ namespace Mango_Engine
             return true;
         }
 
+        public async Task startAsync()
+        {
+            Task t = Task.Run(() => this.start());
+            await t;
+        }
+
 
         #endregion
     }
