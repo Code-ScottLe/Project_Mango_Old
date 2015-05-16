@@ -41,11 +41,33 @@ namespace Mango_WinForm
         private async void Download_Button_Click(object sender, EventArgs e)
         {
             //Start the download.
+
+            /*
             BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
             Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
             progressBar1.Value = 50;
             await my_downloader.startAsync();
             progressBar1.Value = 100;
+             * 
+             * */
+
+            DetailedProgress_Box.AppendText( "Checking Source... \n");
+            BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
+
+            DetailedProgress_Box.AppendText("Initalize Downloader... \n");
+            Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
+
+            progressBar1.Value = 50;
+            DetailedProgress_Box.AppendText( "Downloading...\n.\n.\n.\n");
+            do
+            {
+                await my_downloader.DownloadCurrentPageAsync();
+                DetailedProgress_Box.AppendText(my_downloader.current_filename + " downloaded\n");
+               
+            } while (my_downloader.get_next_page() == true);
+
+            progressBar1.Value = 100;
+            DetailedProgress_Box.AppendText("Completed!\n");
         }
 
         private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)

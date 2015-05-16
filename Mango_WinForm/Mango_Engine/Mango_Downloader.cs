@@ -43,6 +43,11 @@ namespace Mango_Engine
                 _save_to = value;
             }
         }
+
+        public string current_filename
+        {
+            get { return source_html.current_file_name; }
+        }
         #endregion
 
         #region Constructor
@@ -88,8 +93,6 @@ namespace Mango_Engine
 
             } while (continuing == true);
 
-
-
             //all good, return true
             return true;
         }
@@ -100,6 +103,26 @@ namespace Mango_Engine
             await t;
         }
 
+        public async Task DownloadCurrentPageAsync()
+        {
+            //Start downloading with the given html and the saving path.
+
+            //Initialize the WebClient
+            WebClient my_client = new WebClient();
+
+            //Set the encoding
+            my_client.Encoding = source_html.encoding_type;
+           
+            //Download the current page
+
+            await Task.Factory.StartNew(() => { my_client.DownloadFile(new Uri(source_html.get_image_url()), _save_to + source_html.current_file_name); });
+
+        }
+
+        public bool get_next_page()
+        {
+            return source_html.next_page();
+        }
 
         #endregion
     }
