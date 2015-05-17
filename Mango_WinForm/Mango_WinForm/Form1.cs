@@ -42,21 +42,15 @@ namespace Mango_WinForm
         {
             //Start the download.
 
-            /*
-            BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
-            Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
-            progressBar1.Value = 50;
-            await my_downloader.startAsync();
-            progressBar1.Value = 100;
-             * 
-             * */
-
+            //Create a new instance of the mango source.
             DetailedProgress_Box.AppendText( "Checking Source... \n");
             BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
 
+            //Source is OK, create downloader
             DetailedProgress_Box.AppendText("Initalize Downloader... \n");
             Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
 
+            //Everything is good. Start downloading.
             progressBar1.Value = 50;
             DetailedProgress_Box.AppendText( "Downloading...\n.\n.\n.\n");
             do
@@ -66,6 +60,7 @@ namespace Mango_WinForm
                
             } while (my_downloader.get_next_page() == true);
 
+            //everything is good. 
             progressBar1.Value = 100;
             DetailedProgress_Box.AppendText("Completed!\n");
         }
