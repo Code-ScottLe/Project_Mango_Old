@@ -258,23 +258,16 @@ namespace Mango_Engine
 
         public override string get_image_url()
         {
-            //parse the html file and get the picture url out.
+            /*parse the html file and get the picture url out.*/
 
-            //Get the current path of the software (for a temp html file)
-            var current_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string temp_html = current_path + "temp_html.html";
+            /*Get a stream to the Source HTML.*/
+            HttpClient my_client = new HttpClient();
+            var get_stream_asynced_task = my_client.GetStreamAsync(current_url);
+            get_stream_asynced_task.Wait();
 
-            //download the webpage and save as HTML.
-            WebClient my_client = new WebClient();
-            my_client.Encoding = encoding_type;
-            my_client.DownloadFile(current_url, temp_html);
-
-            //Done with downloading, dispose the WebClient
-            my_client.Dispose();
-
-            //Load up the temp html file.
+            /*Load up the temp html file.*/
             HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(temp_html);
+            my_doc.Load(get_stream_asynced_task.Result, encoding_type);
 
             //Batoto use the <img id="comic_page" ... > to hold the source.
             //Search among all the img tags for the correct node.
@@ -305,10 +298,10 @@ namespace Mango_Engine
             //if reach here, mean the file source node was found.
             //pulling out the src file url and return it.
             string src =  comic_node.Attributes["src"].Value;
-
-            File.Delete(temp_html);
-
             get_file_name(src);
+
+            //Release all the resource of the client
+            my_client.Dispose();
 
             return src;
         }
@@ -355,8 +348,10 @@ namespace Mango_Engine
             //if reach here, mean the file source node was found.
             //pulling out the src file url and return it.
             string src = comic_node.Attributes["src"].Value;
-
             get_file_name(src);
+
+            //Release all the resource of the client
+            my_client.Dispose();
 
             return src;
         }
