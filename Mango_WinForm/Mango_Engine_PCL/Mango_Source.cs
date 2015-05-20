@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http;
 
-namespace Mango_Engine
+namespace Mango_Engine_PCL
 {
     public interface M_Source
     {
@@ -144,16 +144,6 @@ namespace Mango_Engine
                 return Encoding.UTF8;
             }
 
-            else if (encoding_str == "UTF-7")
-            {
-                return Encoding.UTF7;
-            }
-
-            else if (encoding_str == "ASCII")
-            {
-                return Encoding.ASCII;
-            }
-
             else if (encoding_str == "Unicode")
             {
                 return Encoding.Unicode;
@@ -188,4 +178,5 @@ namespace Mango_Engine
     }
 
 #endregion
+
 }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using System.Reflection;
 using System.Net;
-using HtmlAgilityPack;
 using System.Net.Http;
+using System.IO;
+using HtmlAgilityPack;
 
-namespace Mango_Engine
+namespace Mango_Engine_PCL
 {
     public class BatotoMango_Source : Mango_Source
     {
@@ -88,7 +87,7 @@ namespace Mango_Engine
 
             //Load up the temp html file.
             HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(source_html,encoding_type);
+            my_doc.Load(source_html, encoding_type);
 
             //Attemp to search for the page_select combo box, which contain all the files.
             /*Example:
@@ -107,7 +106,7 @@ namespace Mango_Engine
                 {
                     continue;
                 }
-                
+
                 //Where ID = "page_select"
                 if (select_node.Attributes["id"].Value == "page_select")
                 {
@@ -117,7 +116,7 @@ namespace Mango_Engine
                 }
             }
 
-            if(page_select_node == null)
+            if (page_select_node == null)
             {
                 //if it is still null (no values was found), error.
                 return false;
@@ -137,26 +136,26 @@ namespace Mango_Engine
             HtmlNodeCollection option_nodes = page_select_node.SelectNodes("option");
             foreach (HtmlNode option_node in option_nodes)
             {
-                if(!option_node.Attributes.Contains("selected"))
+                if (!option_node.Attributes.Contains("selected"))
                 {
                     //Not selected. Keep moving.
                     continue;
                 }
 
-                if(option_node.Attributes["selected"].Value == "selected")
+                if (option_node.Attributes["selected"].Value == "selected")
                 {
                     //matched. 
-                    if(option_node != option_nodes.Last())
+                    if (option_node != option_nodes.Last())
                     {
                         //Get the next guy if only the current node is not the last node.
-                        next_page = option_nodes[option_nodes.IndexOf(option_node) + 1];                     
+                        next_page = option_nodes[option_nodes.IndexOf(option_node) + 1];
                     }
 
                     break;
                 }
             }
 
-            if(next_page == null)
+            if (next_page == null)
             {
                 //nothing was found, something is wrong or current selectd page was the last one.
                 return false;
@@ -179,10 +178,10 @@ namespace Mango_Engine
             //Initialize a client for the Html file.
             HttpClient my_client = new HttpClient();
             Stream source_html = await my_client.GetStreamAsync(current_url);
-   
+
             //Load up the temp html file.
             HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(source_html,encoding_type);
+            my_doc.Load(source_html, encoding_type);
 
             //Attemp to search for the page_select combo box, which contain all the files.
             /*Example:
@@ -297,12 +296,12 @@ namespace Mango_Engine
             foreach (HtmlNode img_node in my_doc.DocumentNode.SelectNodes("//img"))
             {
                 //make sure the attribute id is valid.
-                if(!img_node.Attributes.Contains("id"))
+                if (!img_node.Attributes.Contains("id"))
                 {
                     continue;
                 }
 
-                if(img_node.Attributes["id"].Value == "comic_page")
+                if (img_node.Attributes["id"].Value == "comic_page")
                 {
                     //found it.
                     comic_node = img_node;
@@ -318,7 +317,7 @@ namespace Mango_Engine
 
             //if reach here, mean the file source node was found.
             //pulling out the src file url and return it.
-            string src =  comic_node.Attributes["src"].Value;
+            string src = comic_node.Attributes["src"].Value;
 
             File.Delete(temp_html);
 
