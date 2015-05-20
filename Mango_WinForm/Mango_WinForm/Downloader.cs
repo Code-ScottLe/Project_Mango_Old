@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 using System.Net;
+using Mango_Engine;
 
-namespace Mango_Engine
+namespace Mango_WinForm
 {
     public class Mango_Downloader
     {
@@ -80,7 +80,7 @@ namespace Mango_Engine
             //Set the encoding
             my_client.Encoding = source_html.encoding_type;
 
-           //status of downloading
+            //status of downloading
             bool continuing = true;
 
             do
@@ -112,7 +112,7 @@ namespace Mango_Engine
 
             //Set the encoding
             my_client.Encoding = source_html.encoding_type;
-           
+
             //Download the current page
 
             await Task.Factory.StartNew(() => { my_client.DownloadFile(new Uri(source_html.get_image_url()), _save_to + source_html.current_file_name); });

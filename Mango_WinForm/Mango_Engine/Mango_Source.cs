@@ -109,38 +109,28 @@ namespace Mango_Engine
             //Assuming that the url is not null.
 
             //Create a WebRequest to request information about the source.
-            WebRequest my_request = WebRequest.Create(_base_url);
+            HttpWebRequest my_request = (HttpWebRequest)WebRequest.Create(_base_url);
 
             //Set an Timeout-limitation. (milisecond)
             my_request.Timeout = 2000;
 
             //Get the respond back from the URL.
-            try
-            {
-                WebResponse my_response = my_request.GetResponse();
+  
+            HttpWebResponse my_response = (HttpWebResponse)my_request.GetResponse();    
 
-                //if reached here, mean it was able to get the respond back from the service.
+            //if reached here, mean it was able to get the respond back from the service.    
 
-                //Read the header.
-                WebHeaderCollection my_header = my_response.Headers;
 
-                //Get the Data Encoding.
-                //in the header: Content-Type: text/html; charset=UTF-8
-                string Content_Type = my_header["Content-Type"];
+            //Get the Data Encoding.    
+            //in the header: Content-Type: text/html; charset=UTF-8    
+            string Content_Type = my_response.ContentType;    
 
-                string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
+            string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);    
 
-                Encoding encode = string_to_encoding(encoding_str);
+            Encoding encode = string_to_encoding(encoding_str);    
 
-                //encode was converted. set to encoding type
-                _encoding_type = encode;
-                
-            }
-           
-            catch(WebException e)
-            {
-                //Timed out.
-            }
+            //encode was converted. set to encoding type    
+            _encoding_type = encode;    
 
         }
 
