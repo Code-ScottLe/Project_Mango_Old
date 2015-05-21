@@ -137,6 +137,39 @@ namespace Mango_Engine
 
         }
 
+        protected virtual async Task initAsync()
+        {
+            //Initialize the class.
+            //Assuming that the url is not null.
+
+            //Create a WebRequest to request information about the source.
+            HttpWebRequest my_request = (HttpWebRequest)WebRequest.Create(_base_url);
+
+            //Set an Timeout-limitation. (milisecond)
+            my_request.Timeout = 5000;
+
+            //Get the respond back from the URL.
+            HttpWebResponse my_response =  (HttpWebResponse)(await my_request.GetResponseAsync());
+
+            //if reached here, mean it was able to get the respond back from the service.    
+
+
+            //Get the Data Encoding.    
+            //in the header: Content-Type: text/html; charset=UTF-8    
+            string Content_Type = my_response.ContentType;
+
+            string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
+
+            Encoding encode = string_to_encoding(encoding_str);
+
+            //encode was converted. set to encoding type    
+            _encoding_type = encode;
+
+            //Done with the response.Release the connection.
+            my_response.Close();
+
+        }
+
         public static Encoding string_to_encoding(string encoding_str)
         {
             if(encoding_str == "UTF-8")

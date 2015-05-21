@@ -141,46 +141,45 @@ namespace Mango_Engine
             my_client.Dispose();
 
         }
-        public override bool next_page()
+
+        protected override async Task initAsync()
         {
-           //get the next link ready.
-            _current_page_index++;
+            /*Initialize the instance of the batoto source. (asynchronous )*/
 
-            if(_current_page_index < _total_pages)
-            {
-                current_url = _pages[_current_page_index];
-                return true;
-            }
-
-            else
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> next_page_Async()
-        {
-            //modify the URL to get to the next page.
-
-            //Initialize a client for the Html file.
+            //Create a HttpClient to get the data from the current URL
             HttpClient my_client = new HttpClient();
-            Stream source_html = await my_client.GetStreamAsync(current_url);
-   
-            //Load up the temp html file.
-            HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(source_html,encoding_type);
 
-            //Attemp to search for the page_select combo box, which contain all the files.
-            /*Example:
-             * <select name="page_select" id="page_select" onchange="window.location=this.value;">
-             * .... values
-             * </select>
-             * */
-            HtmlNodeCollection select_nodes = my_doc.DocumentNode.SelectNodes("//select");
+            //set the timeout of the client (5 secs)
+            my_client.Timeout = new TimeSpan(0, 0, 5);
+
+            /*Getting the Response as well as the stream to the file in the background.*/
+            HttpResponseMessage source_response = await my_client.GetAsync(current_url);         //Possible Exception Throw.
+            
+
+
+            /*Get The Data Encoding from the site from the Content-Type (belong in Content Header)*/
+            var source_response_header = source_response.Content.Headers;
+            string content_type = source_response_header.ContentType.ToString();
+            string encoding_str = content_type.Substring(content_type.IndexOf("=") + 1);
+
+            //Set the encoding
+            _encoding_type = string_to_encoding(encoding_str);
+
+            /*Get a stream to the Source HTML file.*/
+            Stream source_html = await my_client.GetStreamAsync(current_url);
+
+            /*Load up the source stream as HTML*/
+            HtmlDocument my_doc = new HtmlDocument();
+            my_doc.Load(source_html, encoding_type);
+
+            /*Attempt to search for the page_select combo box, which contains all the files.*/
+            //Get all the nodes 
+            HtmlNodeCollection select_nodes_collection = my_doc.DocumentNode.SelectNodes("//select");
+
             HtmlNode page_select_node = null;
 
-            //Search among the select boxes
-            foreach (HtmlNode select_node in select_nodes)
+            //search among the select boxes for the page_select.
+            foreach (HtmlNode select_node in select_nodes_collection)
             {
                 //if exists the field ID
                 if (!select_node.Attributes.Contains("id"))
@@ -197,58 +196,40 @@ namespace Mango_Engine
                 }
             }
 
-            if (page_select_node == null)
+            /*Got the page_select node, get the links witth the total pages number*/
+            HtmlNodeCollection page_select_option_nodes_collection = page_select_node.SelectNodes("option");
+
+            //set the number of pages.
+            numbers_of_pages = page_select_option_nodes_collection.Count;
+
+            //Add in the links (inside the attribute "value")
+            for (int i = 0; i < numbers_of_pages; i++)
             {
-                //if it is still null (no values was found), error.
-                return false;
+                HtmlNode page_select_option_node = page_select_option_nodes_collection[i];
+                string page_link = page_select_option_node.Attributes["value"].Value;
+                _pages.Add(page_link);
+
             }
 
-            //if reach here, mean the correct node was found.
-            HtmlNode next_page = null;
-
-            //Now search through all the options attribute and find the one that is marked as "selected" (which is the current page)
-            /*
-             * Example:
-             * <select name="page_select" id="page_select" onchange="window.location=this.value;">\
-             *       <option value="http://bato.to/read/_/306043/d-frag_v9_ch65_by_hot-chocolate-scans/1" selected="selected">page 1</option>
-             * </select>
-             * 
-             * */
-            HtmlNodeCollection option_nodes = page_select_node.SelectNodes("option");
-            foreach (HtmlNode option_node in option_nodes)
-            {
-                if (!option_node.Attributes.Contains("selected"))
-                {
-                    //Not selected. Keep moving.
-                    continue;
-                }
-
-                if (option_node.Attributes["selected"].Value == "selected")
-                {
-                    //matched. 
-                    if (option_node != option_nodes.Last())
-                    {
-                        //Get the next guy if only the current node is not the last node.
-                        next_page = option_nodes[option_nodes.IndexOf(option_node) + 1];
-                    }
-
-                    break;
-                }
-            }
-
-            if (next_page == null)
-            {
-                //nothing was found, something is wrong or current selectd page was the last one.
-                return false;
-            }
-
-            //set the url to the next page. (BUG CHECK)
-            current_url = next_page.Attributes["value"].Value;
-
-            //everything is good. Clear out the data and return
+            //Done with setting. Close the client
             my_client.Dispose();
-            source_html.Dispose();
-            return true;
+        }
+
+        public override bool next_page()
+        {
+           //get the next link ready.
+            _current_page_index++;
+
+            if(_current_page_index < _total_pages)
+            {
+                current_url = _pages[_current_page_index];
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
         }
 
         public override string get_url()
