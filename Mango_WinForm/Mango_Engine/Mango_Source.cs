@@ -22,28 +22,29 @@ namespace Mango_Engine
 
         #region Fields
         //Fields
+        protected string _source_name;
         protected int _total_pages;
         protected string _base_url;
         protected string _url;
         protected string _file_name;
-        protected int _current_page;
         protected Encoding _encoding_type;
         #endregion
 
         #region Properties
         //Properties
-        public int current_page
+        public string source_name
         {
             get
             {
-                return _current_page;
+                return _source_name;
             }
 
             protected set
             {
-                _current_page = value;
+                _source_name = value;
             }
         }
+
         public string base_url
         {
             get
@@ -83,7 +84,7 @@ namespace Mango_Engine
             }
         }
 
-        public int numbers_of_pages
+        public int total_pages
         {
             get
             {
@@ -95,7 +96,6 @@ namespace Mango_Engine
                 _total_pages = value;
             }
         }
-
 
         public Encoding encoding_type
         {
@@ -118,6 +118,8 @@ namespace Mango_Engine
             //default constructor, hidden.
             _url = string.Empty;
             _base_url = string.Empty;
+            _source_name = string.Empty;
+            _total_pages = 0;
             _file_name = string.Empty;
             _encoding_type = Encoding.UTF8;     //default encoding.
         }

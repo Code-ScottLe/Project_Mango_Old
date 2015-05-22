@@ -14,6 +14,7 @@ namespace Mango_WinForm
         //Fields
         private Mango_Source _html;
         private string _save_to;
+        private int _downloaded_count;
         #endregion
 
         #region Properties
@@ -49,6 +50,13 @@ namespace Mango_WinForm
             get { return source_html.current_file_name; }
         }
 
+        public int downloaded_count
+        {
+            get
+            {
+                return _downloaded_count;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -64,6 +72,7 @@ namespace Mango_WinForm
         {
             //Create a downloader for Mango, accept in a string of HTML (source) and the local path (where to save)
             source_html = html;
+            _downloaded_count = 0;
             local_saving_path = local_uri;
         }
 
@@ -88,6 +97,9 @@ namespace Mango_WinForm
             {
                 //Download the current page
                 my_client.DownloadFile(source_html.get_image_url(), _save_to + source_html.current_file_name);
+
+                //Increse the download count
+                _downloaded_count++;
 
                 //try to get the next page
                 continuing = source_html.next_page();
@@ -115,9 +127,9 @@ namespace Mango_WinForm
             my_client.Encoding = source_html.encoding_type;
 
             //Download the current page
-
             await Task.Factory.StartNew(() => { my_client.DownloadFile(new Uri(source_html.get_image_url()), _save_to + source_html.current_file_name); });
 
+            _downloaded_count++;
         }
 
         public bool get_next_page()
@@ -128,6 +140,15 @@ namespace Mango_WinForm
         public async Task<bool> get_next_page_Async()
         {
             return await source_html.next_page_Async();
+        }
+
+        public int completed_percentage()
+        {
+            float percentaged = (float)_downloaded_count / (float)source_html.total_pages;
+
+            int percentage = (int)(percentaged * 100);
+
+            return percentage;
         }
 
         #endregion

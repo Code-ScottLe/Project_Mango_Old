@@ -28,8 +28,8 @@ namespace Mango_Engine
         BatotoMango_Source() : base()
         {
             //default constructor, call base constructor.
+            _source_name = "Batoto";
             _pages = new List<string>();
-            _total_pages = 0;
             _current_page_index = 0;
 
         }
@@ -37,9 +37,9 @@ namespace Mango_Engine
         public BatotoMango_Source(string url_source) : base()
         {
             //Create a new instace of BatotoMango_Source, an object represent bato.to source for mango.
+            _source_name = "Batoto";
             _url = _base_url = url_source;
             _pages = new List<string>();
-            _total_pages = 0;
             _current_page_index = 0;
             
         }
@@ -133,10 +133,10 @@ namespace Mango_Engine
                 HtmlNodeCollection page_select_option_nodes_collection = page_select_node.SelectNodes("option");
 
                 //set the number of pages.
-                numbers_of_pages = page_select_option_nodes_collection.Count;
+                total_pages = page_select_option_nodes_collection.Count;
 
                 //Add in the links (inside the attribute "value")
-                for(int i = 0; i < numbers_of_pages;i++)
+                for(int i = 0; i < total_pages;i++)
                 {
                     HtmlNode page_select_option_node = page_select_option_nodes_collection[i];
                     string page_link = page_select_option_node.Attributes["value"].Value;
@@ -163,8 +163,8 @@ namespace Mango_Engine
             //Create a HttpClient to get the data from the current URL
             HttpClient my_client = new HttpClient();
 
-            //set the timeout of the client (5 secs)
-            my_client.Timeout = new TimeSpan(0, 0, 5);
+            //set the timeout of the client (10 secs)
+            my_client.Timeout = new TimeSpan(0, 0, 10);
 
             /*Getting the Response as well as the stream to the file in the background.*/
 
@@ -215,10 +215,10 @@ namespace Mango_Engine
                 HtmlNodeCollection page_select_option_nodes_collection = page_select_node.SelectNodes("option");
 
                 //set the number of pages.
-                numbers_of_pages = page_select_option_nodes_collection.Count;
+                total_pages = page_select_option_nodes_collection.Count;
 
                 //Add in the links (inside the attribute "value")
-                for (int i = 0; i < numbers_of_pages; i++)
+                for (int i = 0; i < total_pages; i++)
                 {
                     HtmlNode page_select_option_node = page_select_option_nodes_collection[i];
                     string page_link = page_select_option_node.Attributes["value"].Value;

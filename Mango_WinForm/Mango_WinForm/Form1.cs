@@ -41,30 +41,32 @@ namespace Mango_WinForm
         private async void Download_Button_Click(object sender, EventArgs e)
         {
             //Start the download.
+            progressBar1.Value = 0;
             try
             {
                 //Create a new instance of the mango source.
-            DetailedProgress_Box.AppendText( "Checking Source... \n");
-            BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
-            await my_source.initAsync();
+                DetailedProgress_Box.AppendText( "Checking Source... \n");
+                BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
+                await my_source.initAsync();
 
-            //Source is OK, create downloader
-            DetailedProgress_Box.AppendText("Initalize Downloader... \n");
-            Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
+                //Source is OK, create downloader
+                DetailedProgress_Box.AppendText("Initalize Downloader... \n");
+                Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
 
-            //Everything is good. Start downloading.
-            progressBar1.Value = 50;
-            DetailedProgress_Box.AppendText( "Downloading...\n.\n.\n.\n");
-            do
-            {
-                await my_downloader.DownloadCurrentPageAsync();
-                DetailedProgress_Box.AppendText(my_downloader.current_filename + " downloaded\n");
+                //Everything is good. Start downloading.
+                DetailedProgress_Box.AppendText( "Downloading...\n.\n.\n.\n");
+                do
+                {
+                    await my_downloader.DownloadCurrentPageAsync();
+                    DetailedProgress_Box.AppendText(my_downloader.current_filename + " downloaded\n");
+                    int completed = my_downloader.completed_percentage();
+                    progressBar1.Value = completed;
                
-            } while ( await my_downloader.get_next_page_Async() == true);
+                } while ( await my_downloader.get_next_page_Async() == true);
 
-            //everything is good. 
-            progressBar1.Value = 100;
-            DetailedProgress_Box.AppendText("Completed!\n");
+                //everything is good. 
+                progressBar1.Value = 100;
+                DetailedProgress_Box.AppendText("Completed!\n");
             }
             
             catch (Exception ex)
