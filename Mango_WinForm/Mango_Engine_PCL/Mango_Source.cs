@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 
@@ -16,12 +17,14 @@ namespace Mango_Engine_PCL
         string get_image_url();
     }
 
-    public abstract class  Mango_Source : M_Source
+    public abstract class Mango_Source : M_Source
     {
         //Represent a source for Mango.
 
         #region Fields
         //Fields
+        protected string _source_name;
+        protected int _total_pages;
         protected string _base_url;
         protected string _url;
         protected string _file_name;
@@ -30,6 +33,18 @@ namespace Mango_Engine_PCL
 
         #region Properties
         //Properties
+        public string source_name
+        {
+            get
+            {
+                return _source_name;
+            }
+
+            protected set
+            {
+                _source_name = value;
+            }
+        }
 
         public string base_url
         {
@@ -38,7 +53,7 @@ namespace Mango_Engine_PCL
                 return _base_url;
             }
 
-            set
+            protected set
             {
                 _base_url = value;
             }
@@ -51,7 +66,7 @@ namespace Mango_Engine_PCL
                 return _url;
             }
 
-            set
+            protected set
             {
                 _url = value;
             }
@@ -64,12 +79,24 @@ namespace Mango_Engine_PCL
                 return _file_name;
             }
 
-            set
+            protected set
             {
                 _file_name = value;
             }
         }
 
+        public int total_pages
+        {
+            get
+            {
+                return _total_pages;
+            }
+
+            protected set
+            {
+                _total_pages = value;
+            }
+        }
 
         public Encoding encoding_type
         {
@@ -90,20 +117,27 @@ namespace Mango_Engine_PCL
         protected Mango_Source()
         {
             //default constructor, hidden.
+            _url = string.Empty;
+            _base_url = string.Empty;
+            _source_name = string.Empty;
+            _total_pages = 0;
+            _file_name = string.Empty;
+            _encoding_type = Encoding.UTF8;     //default encoding.
         }
 
         protected Mango_Source(string url_source)
+            : this()
         {
             //Create a new instance of Mango_Source, representing a source for Mango, accept a string of URL.
             _url = _base_url = url_source;
-            init();
+
         }
         #endregion
 
         #region Methods
         //Methods
 
-        protected virtual void init()
+        public virtual void init()
         {
             //Initialize the class.
             //Assuming that the url is not null.
@@ -112,38 +146,75 @@ namespace Mango_Engine_PCL
             HttpWebRequest my_request = (HttpWebRequest)WebRequest.Create(_base_url);
 
             //Set an Timeout-limitation. (milisecond)
-            my_request.Timeout = 5000;
+            my_request.ContinueTimeout = 5000;
 
             //Get the respond back from the URL.
-  
-            HttpWebResponse my_response = (HttpWebResponse)my_request.GetResponse();    
+
+            Task<WebResponse> t_response = my_request.GetResponseAsync();
+
+            t_response.Wait();
+
+            HttpWebResponse my_response = (HttpWebResponse)t_response.Result;
 
             //if reached here, mean it was able to get the respond back from the service.    
 
 
             //Get the Data Encoding.    
             //in the header: Content-Type: text/html; charset=UTF-8    
-            string Content_Type = my_response.ContentType;    
+            string Content_Type = my_response.ContentType;
 
-            string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);    
+            string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
 
-            Encoding encode = string_to_encoding(encoding_str);    
+            Encoding encode = string_to_encoding(encoding_str);
 
             //encode was converted. set to encoding type    
-            _encoding_type = encode;    
+            _encoding_type = encode;
 
             //Done with the response.Release the connection.
-            my_response.Close();
+            my_response.Dispose();
+
+        }
+
+        public virtual async Task initAsync()
+        {
+            //Initialize the class.
+            //Assuming that the url is not null.
+
+            //Create a WebRequest to request information about the source.
+            HttpWebRequest my_request = (HttpWebRequest)WebRequest.Create(_base_url);
+
+            //Set an Timeout-limitation. (milisecond)
+            my_request.ContinueTimeout = 5000;
+
+            //Get the respond back from the URL.
+            HttpWebResponse my_response = (HttpWebResponse)(await my_request.GetResponseAsync());
+
+            //if reached here, mean it was able to get the respond back from the service.    
+
+
+            //Get the Data Encoding.    
+            //in the header: Content-Type: text/html; charset=UTF-8    
+            string Content_Type = my_response.ContentType;
+
+            string encoding_str = Content_Type.Substring(Content_Type.IndexOf("=") + 1);
+
+            Encoding encode = string_to_encoding(encoding_str);
+
+            //encode was converted. set to encoding type    
+            _encoding_type = encode;
+
+            //Done with the response.Release the connection.
+            my_response.Dispose();
 
         }
 
         public static Encoding string_to_encoding(string encoding_str)
         {
-            if(encoding_str == "UTF-8")
+            if (encoding_str == "UTF-8")
             {
                 return Encoding.UTF8;
             }
-
+            
             else if (encoding_str == "Unicode")
             {
                 return Encoding.Unicode;
@@ -156,13 +227,17 @@ namespace Mango_Engine_PCL
         }
         abstract public bool next_page();
 
+        abstract public Task<bool> next_page_Async();
+
         abstract public string get_url();
 
         abstract public string get_image_url();
 
+        abstract public Task<string> get_image_url_Async();
+
         protected virtual string get_file_name(string src_url)
         {
-           //Parse the URl and give back the original file name.
+            //Parse the URl and give back the original file name.
             //Strat: Scan from the bottom up for the last /.
             int last_slash_index = src_url.LastIndexOf('/');
 
@@ -177,6 +252,6 @@ namespace Mango_Engine_PCL
         }
     }
 
-#endregion
+        #endregion
 
 }

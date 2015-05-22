@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BatotoMango_Source.cs" />
+    <Compile Include="MangoException.cs" />
     <Compile Include="Mango_Source.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
