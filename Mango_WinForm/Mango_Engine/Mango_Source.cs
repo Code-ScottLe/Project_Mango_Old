@@ -22,6 +22,7 @@ namespace Mango_Engine
 
         #region Fields
         //Fields
+        protected int _total_pages;
         protected string _base_url;
         protected string _url;
         protected string _file_name;
@@ -38,7 +39,7 @@ namespace Mango_Engine
                 return _base_url;
             }
 
-            set
+            protected set
             {
                 _base_url = value;
             }
@@ -51,7 +52,7 @@ namespace Mango_Engine
                 return _url;
             }
 
-            set
+            protected set
             {
                 _url = value;
             }
@@ -64,9 +65,22 @@ namespace Mango_Engine
                 return _file_name;
             }
 
-            set
+            protected set
             {
                 _file_name = value;
+            }
+        }
+
+        public int numbers_of_pages
+        {
+            get
+            {
+                return _total_pages;
+            }
+
+            protected set
+            {
+                _total_pages = value;
             }
         }
 
@@ -90,20 +104,24 @@ namespace Mango_Engine
         protected Mango_Source()
         {
             //default constructor, hidden.
+            _url = string.Empty;
+            _base_url = string.Empty;
+            _file_name = string.Empty;
+            _encoding_type = Encoding.UTF8;     //default encoding.
         }
 
-        protected Mango_Source(string url_source)
+        protected Mango_Source(string url_source) : this()
         {
             //Create a new instance of Mango_Source, representing a source for Mango, accept a string of URL.
             _url = _base_url = url_source;
-            init();
+            
         }
         #endregion
 
         #region Methods
         //Methods
 
-        protected virtual void init()
+        public virtual void init()
         {
             //Initialize the class.
             //Assuming that the url is not null.
@@ -137,7 +155,7 @@ namespace Mango_Engine
 
         }
 
-        protected virtual async Task initAsync()
+        public virtual async Task initAsync()
         {
             //Initialize the class.
             //Assuming that the url is not null.

@@ -41,10 +41,12 @@ namespace Mango_WinForm
         private async void Download_Button_Click(object sender, EventArgs e)
         {
             //Start the download.
-
-            //Create a new instance of the mango source.
+            try
+            {
+                //Create a new instance of the mango source.
             DetailedProgress_Box.AppendText( "Checking Source... \n");
             BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
+            await my_source.initAsync();
 
             //Source is OK, create downloader
             DetailedProgress_Box.AppendText("Initalize Downloader... \n");
@@ -63,6 +65,14 @@ namespace Mango_WinForm
             //everything is good. 
             progressBar1.Value = 100;
             DetailedProgress_Box.AppendText("Completed!\n");
+            }
+            
+            catch (Exception ex)
+            {
+                StringBuilder str = new StringBuilder();
+                str.AppendFormat("Something is wrong! \n {0} \n Detailed Inner Exception: {1}\n", ex.Message, ex.InnerException);
+                DetailedProgress_Box.AppendText(str.ToString());
+            }
         }
 
         private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)

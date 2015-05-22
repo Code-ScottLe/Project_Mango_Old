@@ -48,6 +48,7 @@ namespace Mango_WinForm
         {
             get { return source_html.current_file_name; }
         }
+
         #endregion
 
         #region Constructor
