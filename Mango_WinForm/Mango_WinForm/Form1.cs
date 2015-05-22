@@ -60,7 +60,7 @@ namespace Mango_WinForm
                 await my_downloader.DownloadCurrentPageAsync();
                 DetailedProgress_Box.AppendText(my_downloader.current_filename + " downloaded\n");
                
-            } while (my_downloader.get_next_page() == true);
+            } while ( await my_downloader.get_next_page_Async() == true);
 
             //everything is good. 
             progressBar1.Value = 100;

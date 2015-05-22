@@ -26,12 +26,24 @@ namespace Mango_Engine
         protected string _base_url;
         protected string _url;
         protected string _file_name;
+        protected int _current_page;
         protected Encoding _encoding_type;
         #endregion
 
         #region Properties
         //Properties
+        public int current_page
+        {
+            get
+            {
+                return _current_page;
+            }
 
+            protected set
+            {
+                _current_page = value;
+            }
+        }
         public string base_url
         {
             get
@@ -217,9 +229,13 @@ namespace Mango_Engine
         }
         abstract public bool next_page();
 
+        abstract public Task<bool> next_page_Async();
+
         abstract public string get_url();
 
         abstract public string get_image_url();
+
+        abstract public Task<string> get_image_url_Async();
 
         protected virtual string get_file_name(string src_url)
         {

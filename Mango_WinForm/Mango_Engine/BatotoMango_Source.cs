@@ -255,6 +255,11 @@ namespace Mango_Engine
             }
         }
 
+        public override async Task<bool> next_page_Async()
+        {
+            return await Task.Factory.StartNew<bool>(() => next_page());
+        }
+
         public override string get_url()
         {
             return current_url;
@@ -310,7 +315,7 @@ namespace Mango_Engine
             return src;
         }
 
-        public async Task<string> get_image_url_Async()
+        public override async Task<string> get_image_url_Async()
         {
             //parse the html file and get the picture url out
             //Initalize the HttpClient for the source html.

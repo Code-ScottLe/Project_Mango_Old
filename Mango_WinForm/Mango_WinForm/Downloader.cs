@@ -125,6 +125,11 @@ namespace Mango_WinForm
             return source_html.next_page();
         }
 
+        public async Task<bool> get_next_page_Async()
+        {
+            return await source_html.next_page_Async();
+        }
+
         #endregion
     }
 }
