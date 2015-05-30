@@ -28,7 +28,7 @@ namespace Mango_Engine
         BatotoMango_Source() : base()
         {
             //default constructor, call base constructor.
-            _source_name = "Batoto";
+            source_name = "Batoto";
             _pages = new List<string>();
             _current_page_index = 0;
 
@@ -37,7 +37,7 @@ namespace Mango_Engine
         public BatotoMango_Source(string url_source) : base()
         {
             //Create a new instace of BatotoMango_Source, an object represent bato.to source for mango.
-            _source_name = "Batoto";
+            source_name = "Batoto";
             _url = _base_url = url_source;
             _pages = new List<string>();
             _current_page_index = 0;

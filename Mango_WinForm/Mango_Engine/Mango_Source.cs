@@ -22,12 +22,12 @@ namespace Mango_Engine
 
         #region Fields
         //Fields
-        protected string _source_name;
-        protected int _total_pages;
-        protected string _base_url;
-        protected string _url;
-        protected string _file_name;
-        protected Encoding _encoding_type;
+        protected string _source_name;          //Current source name
+        protected int _total_pages;             //number of available pages for the current episode,
+        protected string _base_url;             //the url that the instance was cretaed with
+        protected string _url;                  //the url of the picture/page that will be used for downloading.
+        protected string _file_name;            //The file name that will be used to save the picture/page locally.
+        protected Encoding _encoding_type;      //The encoding type for the webpage.
         #endregion
 
         #region Properties
