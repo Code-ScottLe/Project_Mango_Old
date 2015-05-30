@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.IO;
 using HtmlAgilityPack;
 
 namespace Mango_Engine
@@ -113,7 +114,10 @@ namespace Mango_Engine
                 string page_number_string = div_node_row_page_number.InnerText.Substring(0,
                     div_node_row_page_number.InnerText.IndexOf(" "));
 
-                Int32.TryParse(page_number_string, out _total_pages);
+                if(!Int32.TryParse(page_number_string, out _total_pages))
+                {
+                    throw new MangoException("Can't get the number of pages");
+                }
 
                 //Done reading the number of pages, set the URL to the reading page.
                 current_url += "/read#page=1";
@@ -122,7 +126,7 @@ namespace Mango_Engine
                 my_client.Dispose();
             }
 
-            catch (AggregateException ae)
+            catch (Exception ae)
             {
                 throw new MangoException("Initalize failed", ae);
             }
@@ -130,7 +134,66 @@ namespace Mango_Engine
 
         public override async Task initAsync()
         {
+            /*Initialzie the current instance of the FakkuMango_Source (async)*/
+            //Create a HttpClient to get the data from the current URL
+            HttpClient my_client = new HttpClient();
 
+            //set the timeout of the client (30 secs)
+            my_client.Timeout = new TimeSpan(0, 0, 30);
+
+            try
+            {
+                HttpResponseMessage source_response = await my_client.GetAsync(current_url);         //Possible Exception Throw.
+
+                /*Get The Data Encoding from the site from the Content-Type (belong in Content Header)*/
+                var source_response_header = source_response.Content.Headers;
+                string content_type = source_response_header.ContentType.ToString();
+                string encoding_str = content_type.Substring(content_type.IndexOf("=") + 1);
+
+                //Set the encoding
+                _encoding_type = string_to_encoding(encoding_str);
+
+                /*Get a stream to the Source HTML file.*/
+                Stream source_html = await my_client.GetStreamAsync(current_url);
+
+                /*Load up the source stream as HTML*/
+                HtmlDocument my_doc = new HtmlDocument();
+                my_doc.Load(source_html, encoding_type);
+
+                /*Attemp to find the <div> node which contain the page number*/
+
+                //Find the unique div node that hold 9 columns of content.
+                HtmlNode div_node_9col_content = my_doc.DocumentNode.SelectSingleNode("//div[@class=\"nine columns content-right \"]");
+
+                //Find the div node that hold the page numbers data inside the 9 columns of content
+                HtmlNode div_node_row_page_number = div_node_9col_content.SelectSingleNode("//div[@class=\"left\" and text()= \"Pages\"]").ParentNode;
+
+                //Get the nodes that contain the numbers of pages
+                HtmlNode div_node_page_number = div_node_row_page_number.SelectSingleNode("div[@class=\"right\"]");
+
+                /*The div node will be in this format: <div class = "right"> 22 pages </div>
+                 * We will have to clean the string before converting it to number*/
+
+                //WARNING: This will break if the inner text is mistyped.
+                string page_number_string = div_node_row_page_number.InnerText.Substring(0,
+                    div_node_row_page_number.InnerText.IndexOf(" "));
+
+                if (!Int32.TryParse(page_number_string, out _total_pages))
+                {
+                    throw new MangoException("Can't get the number of pages");
+                }
+
+                //Done reading the number of pages, set the URL to the reading page.
+                current_url += "/read#page=1";
+
+                //Done with setting. Close the client
+                my_client.Dispose();
+            }
+
+            catch (Exception ae)
+            {
+                throw new MangoException("Initalize failed", ae);
+            }
         }
 
         public override bool next_page()

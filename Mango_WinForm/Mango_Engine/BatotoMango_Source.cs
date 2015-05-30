@@ -148,7 +148,7 @@ namespace Mango_Engine
                 my_client.Dispose();
             }
 
-            catch (AggregateException ae)
+            catch (Exception ae)
             {
                 throw new MangoException("Initalize failed", ae);
             }
