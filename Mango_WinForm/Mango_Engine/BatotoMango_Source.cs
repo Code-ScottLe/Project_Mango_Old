@@ -55,8 +55,8 @@ namespace Mango_Engine
             //Create a HttpClient to get the data from the current URL
             HttpClient my_client = new HttpClient();
 
-            //set the timeout of the client (5 secs)
-            my_client.Timeout = new TimeSpan(0, 0, 5);
+            //set the timeout of the client (30 secs)
+            my_client.Timeout = new TimeSpan(0, 0, 30);
 
             try
             {
@@ -163,8 +163,8 @@ namespace Mango_Engine
             //Create a HttpClient to get the data from the current URL
             HttpClient my_client = new HttpClient();
 
-            //set the timeout of the client (10 secs)
-            my_client.Timeout = new TimeSpan(0, 0, 10);
+            //set the timeout of the client (30 secs)
+            my_client.Timeout = new TimeSpan(0, 0, 30);
 
             /*Getting the Response as well as the stream to the file in the background.*/
 

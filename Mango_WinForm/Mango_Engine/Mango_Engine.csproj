@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatotoMango_Source.cs" />
+    <Compile Include="FakkuMango_Source.cs" />
     <Compile Include="MangoException.cs" />
     <Compile Include="Mango_Source.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
