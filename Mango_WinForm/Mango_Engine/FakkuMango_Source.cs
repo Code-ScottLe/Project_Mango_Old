@@ -9,13 +9,14 @@ using HtmlAgilityPack;
 
 namespace Mango_Engine
 {
-    class FakkuMango_Source : Mango_Source
+    public class FakkuMango_Source : Mango_Source
     {
         /* Represent a Mango Source from Fakku*/
 
         #region Fields
         /*Fields*/
         private int _current_page_index;
+        private string _img_source;
         #endregion
 
         #region Properties
@@ -29,6 +30,7 @@ namespace Mango_Engine
             //Default constructor, call base constructor
             _source_name = "Fakku";
             _current_page_index = 0;
+            _img_source = string.Empty;
         }
 
         public FakkuMango_Source(string url_source) : base()
@@ -37,6 +39,7 @@ namespace Mango_Engine
             _source_name = "Fakku";
             _url = _base_url = url_source;
             _current_page_index = 0;
+            _img_source = string.Empty;
         }
         #endregion
 
@@ -54,33 +57,33 @@ namespace Mango_Engine
 
             try
             {
-                /*Getting the Response as well as the stream to the file in the background.*/
-                var get_asynced_task = my_client.GetAsync(current_url);         //Possible Exception Throw.
+                ///*Getting the Response as well as the stream to the file in the background.*/
+                //var get_asynced_task = my_client.GetAsync(current_url);         //Possible Exception Throw.
                 var get_stream_asynced_task = my_client.GetStreamAsync(current_url);
 
-                //Verify that the web has reponded.
-                if (!get_asynced_task.IsCompleted)
-                {
-                    get_asynced_task.Wait();    //Force to wait before further executing.         
-                }
+                ////Verify that the web has reponded.
+                //if (!get_asynced_task.IsCompleted)
+                //{
+                //    get_asynced_task.Wait();    //Force to wait before further executing.         
+                //}
 
-                //Verify that the task is not faulted.
-                if (get_asynced_task.IsFaulted)
-                {
-                    //Is faulted, throw the same exception Exception to be handle in the catch code.
+                ////Verify that the task is not faulted.
+                //if (get_asynced_task.IsFaulted)
+                //{
+                //    //Is faulted, throw the same exception Exception to be handle in the catch code.
 
-                    throw get_asynced_task.Exception;
-                }
+                //    throw get_asynced_task.Exception;
+                //}
 
-                HttpResponseMessage source_response = get_asynced_task.Result;
+                //HttpResponseMessage source_response = get_asynced_task.Result;
 
-                /*Get The Data Encoding from the site from the Content-Type (belong in Content Header)*/
-                var source_response_header = source_response.Content.Headers;
-                string content_type = source_response_header.ContentType.ToString();
-                string encoding_str = content_type.Substring(content_type.IndexOf("=") + 1);
+                ///*Get The Data Encoding from the site from the Content-Type (belong in Content Header)*/
+                //var source_response_header = source_response.Content.Headers;
+                //string content_type = source_response_header.ContentType.ToString();
+                //string encoding_str = content_type.Substring(content_type.IndexOf("=") + 1);
 
-                //Set the encoding
-                _encoding_type = string_to_encoding(encoding_str);
+                ////Set the encoding
+                //_encoding_type = string_to_encoding(encoding_str);
 
                 /*Get a stream to the Source HTML file.*/
                 //Verify that the get stream task has been done.
@@ -114,8 +117,8 @@ namespace Mango_Engine
                  * We will have to clean the string before converting it to number*/
 
                 //WARNING: This will break if the inner text is mistyped.
-                string page_number_string = div_node_row_page_number.InnerText.Substring(0,
-                    div_node_row_page_number.InnerText.IndexOf(" "));
+                string page_number_string = div_node_page_number.InnerText.Substring(0,
+                   div_node_page_number.InnerText.IndexOf(" "));
 
                 if(!Int32.TryParse(page_number_string, out _total_pages))
                 {
@@ -124,6 +127,18 @@ namespace Mango_Engine
 
                 //Done reading the number of pages, set the URL to the reading page.
                 current_url += "/read#page=1";
+
+                //Search for the <meta> node that contain the property = "og:image"
+                HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+
+                //Get the image value out.
+                string img_link = meta_node.Attributes["content"].Value;
+
+                //Set the img_source link
+                _img_source = img_link.Substring(0, img_link.LastIndexOf('/') + 1);
+
+                //set the page index
+                _current_page_index = 1;
 
                 //Done with setting. Close the client
                 my_client.Dispose();
@@ -146,15 +161,16 @@ namespace Mango_Engine
 
             try
             {
-                HttpResponseMessage source_response = await my_client.GetAsync(current_url);         //Possible Exception Throw.
+                
+                //HttpResponseMessage source_response = await my_client.GetAsync(current_url);         //Possible Exception Throw.
 
-                /*Get The Data Encoding from the site from the Content-Type (belong in Content Header)*/
-                var source_response_header = source_response.Content.Headers;
-                string content_type = source_response_header.ContentType.ToString();
-                string encoding_str = content_type.Substring(content_type.IndexOf("=") + 1);
+                ///*Get The Data Encoding from the site from the Content-Type (belong in Content Header)*/
+                //var source_response_header = source_response.Content.Headers;
+                //string content_type = source_response_header.ContentType.ToString();
+                //string encoding_str = content_type.Substring(content_type.IndexOf("=") + 1);
 
-                //Set the encoding
-                _encoding_type = string_to_encoding(encoding_str);
+                ////Set the encoding
+                //_encoding_type = string_to_encoding(encoding_str);
 
                 /*Get a stream to the Source HTML file.*/
                 Stream source_html = await my_client.GetStreamAsync(current_url);
@@ -178,8 +194,8 @@ namespace Mango_Engine
                  * We will have to clean the string before converting it to number*/
 
                 //WARNING: This will break if the inner text is mistyped.
-                string page_number_string = div_node_row_page_number.InnerText.Substring(0,
-                    div_node_row_page_number.InnerText.IndexOf(" "));
+                string page_number_string = div_node_page_number.InnerText.Substring(0,
+                   div_node_page_number.InnerText.IndexOf(" "));
 
                 if (!Int32.TryParse(page_number_string, out _total_pages))
                 {
@@ -188,6 +204,15 @@ namespace Mango_Engine
 
                 //Done reading the number of pages, set the URL to the reading page.
                 current_url += "/read#page=1";
+
+                //Search for the <meta> node that contain the property = "og:image"
+                HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+
+                //Get the image value out.
+                string img_link = meta_node.Attributes["content"].Value;
+
+                //Set the img_source link
+                _img_source = img_link.Substring(0, img_link.LastIndexOf('/') + 1);
 
                 //set the page index
                 _current_page_index = 1;
@@ -213,7 +238,7 @@ namespace Mango_Engine
                 return false;
             }
 
-            string base_string = current_url.Substring(0, current_url.LastIndexOf('='));
+            string base_string = current_url.Substring(0, current_url.LastIndexOf('=') + 1);
             current_url = base_string += _current_page_index.ToString();
 
             return true;
@@ -233,24 +258,26 @@ namespace Mango_Engine
         {
             /*Get the Image URL from the page out for downloading sync*/
 
-            //Get Stream from the Website.
-            HttpClient my_client = new HttpClient();
-
             try
             {
-                Stream source_stream = my_client.GetStreamAsync(current_url).Result;
+                //Format the number correspond to the fakku-naming style.
+                string page_num = _current_page_index.ToString();
 
-                //Read the stream as HTMLdoc.
-                HtmlDocument my_doc = new HtmlDocument();
-                my_doc.Load(source_stream, encoding_type);
+                if(page_num.Length == 2)
+                {
+                    page_num = "0" + page_num;
+                }
 
-                //Search for the <meta> node that contain the property = "og:image"
-                HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+                if (page_num.Length == 1)
+                {
+                    page_num = "00" + page_num;
+                }
 
                 //Get the image value out.
-                string img_link = meta_node.Attributes["content"].Value;
+                string img_link = _img_source + page_num + ".jpg";      //Fakku only uses JPG?
 
-               
+               //Get the file name.
+                get_file_name(img_link);
 
                 //return the Img link.
                 return img_link;
@@ -261,48 +288,12 @@ namespace Mango_Engine
                 throw new MangoException("Failed to get to next page", e);
             }
 
-            finally
-            {
-                //Done, dispose the client
-                my_client.Dispose();
-            }
         }
 
         public override async Task<string> get_image_url_Async()
         {
             /*Get the Image URL from the page out for downloading async*/
-
-            //Get Stream from the Website.
-            HttpClient my_client = new HttpClient();
-
-            try
-            {
-                Stream source_stream = await my_client.GetStreamAsync(current_url);
-
-                //Read the stream as HTMLdoc.
-                HtmlDocument my_doc = new HtmlDocument();
-                my_doc.Load(source_stream, encoding_type);
-
-                //Search for the <meta> node that contain the property = "og:image"
-                HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
-
-                //Get the image value out.
-                string img_link = meta_node.Attributes["content"].Value;             
-
-                //Return the img value.
-                return img_link;
-            }
-
-            catch (Exception e)
-            {
-                throw new MangoException("Failed to get to next page", e);
-            }
-
-            finally
-            {
-                //Done, dispose the client
-                my_client.Dispose();
-            }
+            return await Task.Factory.StartNew<string>(() => get_image_url());
             
         }
 

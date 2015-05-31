@@ -21,7 +21,7 @@ namespace Mango_WinForm
             //Set up combo boxes with sources
             //Add the officially supported Mango source here.
             SourcesList_ComboBox.Items.Add("Batoto");
-            SourcesList_ComboBox.Items.Add("Generic Source");
+            SourcesList_ComboBox.Items.Add("Fakku");
         }
 
         private void SaveTo_Button_Click(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace Mango_WinForm
             {
                 //Create a new instance of the mango source.
                 DetailedProgress_Box.AppendText( "Checking Source... \n");
-                BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
+                Mango_Source my_source = new FakkuMango_Source(SourceUrl_Box.Text);
                 await my_source.initAsync();
 
                 //Source is OK, create downloader
