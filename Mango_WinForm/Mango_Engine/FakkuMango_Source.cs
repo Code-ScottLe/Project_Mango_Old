@@ -15,6 +15,7 @@ namespace Mango_Engine
 
         #region Fields
         /*Fields*/
+        private int _current_page_index;
         #endregion
 
         #region Properties
@@ -27,6 +28,7 @@ namespace Mango_Engine
         {
             //Default constructor, call base constructor
             _source_name = "Fakku";
+            _current_page_index = 0;
         }
 
         public FakkuMango_Source(string url_source) : base()
@@ -34,6 +36,7 @@ namespace Mango_Engine
             //Create new instance of the FakkuMango_Source with a valid URL link.
             _source_name = "Fakku";
             _url = _base_url = url_source;
+            _current_page_index = 0;
         }
         #endregion
 
@@ -186,6 +189,9 @@ namespace Mango_Engine
                 //Done reading the number of pages, set the URL to the reading page.
                 current_url += "/read#page=1";
 
+                //set the page index
+                _current_page_index = 1;
+
                 //Done with setting. Close the client
                 my_client.Dispose();
             }
@@ -198,27 +204,71 @@ namespace Mango_Engine
 
         public override bool next_page()
         {
-            throw new NotImplementedException();
+            /*Modify the links to jump to the next page*/
+
+            _current_page_index++;
+
+            if(_current_page_index > _total_pages)
+            {
+                return false;
+            }
+
+            string base_string = current_url.Substring(0, current_url.LastIndexOf('='));
+            current_url = base_string += _current_page_index.ToString();
+
+            return true;
         }
 
         public override async Task<bool> next_page_Async()
         {
-
+            return await Task.Factory.StartNew<bool>(() => next_page());
         }
 
         public override string get_url()
         {
-            throw new NotImplementedException();
+            return current_url;
         }
 
         public override string get_image_url()
         {
-            throw new NotImplementedException();
+            /*Get the Image URL from the page out for downloading sync*/
+
+            //Get Stream from the Website.
+            HttpClient my_client = new HttpClient();
+            Stream source_stream = my_client.GetStreamAsync(current_url).Result;
+
+            //Read the stream as HTMLdoc.
+            HtmlDocument my_doc = new HtmlDocument();
+            my_doc.Load(source_stream, encoding_type);
+
+            //Search for the <meta> node that contain the property = "og:image"
+            HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+
+            //Get the image value out.
+            string img_link = meta_node.Attributes["content"].Value;
+
+            return img_link;
         }
 
         public override async Task<string> get_image_url_Async()
         {
+            /*Get the Image URL from the page out for downloading async*/
 
+            //Get Stream from the Website.
+            HttpClient my_client = new HttpClient();
+            Stream source_stream = await my_client.GetStreamAsync(current_url);
+
+            //Read the stream as HTMLdoc.
+            HtmlDocument my_doc = new HtmlDocument();
+            my_doc.Load(source_stream, encoding_type);
+
+            //Search for the <meta> node that contain the property = "og:image"
+            HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+
+            //Get the image value out.
+            string img_link = meta_node.Attributes["content"].Value;
+
+            return img_link;
         }
 
         protected override string get_file_name(string src_url)
