@@ -235,19 +235,37 @@ namespace Mango_Engine
 
             //Get Stream from the Website.
             HttpClient my_client = new HttpClient();
-            Stream source_stream = my_client.GetStreamAsync(current_url).Result;
 
-            //Read the stream as HTMLdoc.
-            HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(source_stream, encoding_type);
+            try
+            {
+                Stream source_stream = my_client.GetStreamAsync(current_url).Result;
 
-            //Search for the <meta> node that contain the property = "og:image"
-            HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+                //Read the stream as HTMLdoc.
+                HtmlDocument my_doc = new HtmlDocument();
+                my_doc.Load(source_stream, encoding_type);
 
-            //Get the image value out.
-            string img_link = meta_node.Attributes["content"].Value;
+                //Search for the <meta> node that contain the property = "og:image"
+                HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
 
-            return img_link;
+                //Get the image value out.
+                string img_link = meta_node.Attributes["content"].Value;
+
+               
+
+                //return the Img link.
+                return img_link;
+            }
+            catch (Exception e)
+            {
+                
+                throw new MangoException("Failed to get to next page", e);
+            }
+
+            finally
+            {
+                //Done, dispose the client
+                my_client.Dispose();
+            }
         }
 
         public override async Task<string> get_image_url_Async()
@@ -256,19 +274,36 @@ namespace Mango_Engine
 
             //Get Stream from the Website.
             HttpClient my_client = new HttpClient();
-            Stream source_stream = await my_client.GetStreamAsync(current_url);
 
-            //Read the stream as HTMLdoc.
-            HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(source_stream, encoding_type);
+            try
+            {
+                Stream source_stream = await my_client.GetStreamAsync(current_url);
 
-            //Search for the <meta> node that contain the property = "og:image"
-            HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
+                //Read the stream as HTMLdoc.
+                HtmlDocument my_doc = new HtmlDocument();
+                my_doc.Load(source_stream, encoding_type);
 
-            //Get the image value out.
-            string img_link = meta_node.Attributes["content"].Value;
+                //Search for the <meta> node that contain the property = "og:image"
+                HtmlNode meta_node = my_doc.DocumentNode.SelectSingleNode("//meta[@property = \"og:image\"]");
 
-            return img_link;
+                //Get the image value out.
+                string img_link = meta_node.Attributes["content"].Value;             
+
+                //Return the img value.
+                return img_link;
+            }
+
+            catch (Exception e)
+            {
+                throw new MangoException("Failed to get to next page", e);
+            }
+
+            finally
+            {
+                //Done, dispose the client
+                my_client.Dispose();
+            }
+            
         }
 
         protected override string get_file_name(string src_url)
