@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Mango_WinForm
 {
@@ -15,6 +16,7 @@ namespace Mango_WinForm
         public Form2()
         {
             InitializeComponent();
+            textBox3.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
     }
 }
