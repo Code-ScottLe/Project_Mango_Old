@@ -107,10 +107,11 @@ namespace Mango_Engine
 
                 /*Attempt to search for the page_select combo box, which contains all the files.*/
                 //Get all the nodes 
-                HtmlNodeCollection select_nodes_collection = my_doc.DocumentNode.SelectNodes("//select");
+                //HtmlNodeCollection select_nodes_collection = my_doc.DocumentNode.SelectNodes("//select");
 
-                HtmlNode page_select_node = null;
+                HtmlNode page_select_node = my_doc.DocumentNode.SelectSingleNode("//select[@id = \"page_select\"]");
 
+                /*
                 //search among the select boxes for the page_select.
                 foreach(HtmlNode select_node in select_nodes_collection)
                 {
@@ -128,6 +129,7 @@ namespace Mango_Engine
                         break;
                     }
                 }
+                */
 
                 /*Got the page_select node, get the links witth the total pages number*/
                 HtmlNodeCollection page_select_option_nodes_collection = page_select_node.SelectNodes("option");
@@ -189,10 +191,11 @@ namespace Mango_Engine
 
                 /*Attempt to search for the page_select combo box, which contains all the files.*/
                 //Get all the nodes 
-                HtmlNodeCollection select_nodes_collection = my_doc.DocumentNode.SelectNodes("//select");
+                //HtmlNodeCollection select_nodes_collection = my_doc.DocumentNode.SelectNodes("//select");
 
-                HtmlNode page_select_node = null;
+                HtmlNode page_select_node = my_doc.DocumentNode.SelectSingleNode("//select[@id = \"page_select\"]");
 
+                /*
                 //search among the select boxes for the page_select.
                 foreach (HtmlNode select_node in select_nodes_collection)
                 {
@@ -210,6 +213,7 @@ namespace Mango_Engine
                         break;
                     }
                 }
+                */
 
                 /*Got the page_select node, get the links witth the total pages number*/
                 HtmlNodeCollection page_select_option_nodes_collection = page_select_node.SelectNodes("option");
@@ -280,8 +284,9 @@ namespace Mango_Engine
 
             //Batoto use the <img id="comic_page" ... > to hold the source.
             //Search among all the img tags for the correct node.
-            HtmlNode comic_node = null;
+            HtmlNode comic_node = my_doc.DocumentNode.SelectSingleNode("//img[@id = \"comic_page\"]");
 
+            /*
             foreach (HtmlNode img_node in my_doc.DocumentNode.SelectNodes("//img"))
             {
                 //make sure the attribute id is valid.
@@ -297,6 +302,7 @@ namespace Mango_Engine
                     break;
                 }
             }
+            */
 
             if (comic_node == null)
             {
@@ -330,8 +336,9 @@ namespace Mango_Engine
 
             //Batoto use the <img id="comic_page" ... > to hold the source.
             //Search among all the img tags for the correct node.
-            HtmlNode comic_node = null;
+            HtmlNode comic_node = my_doc.DocumentNode.SelectSingleNode("//img[@id = \"comic_page\"]");
 
+            /*
             foreach (HtmlNode img_node in my_doc.DocumentNode.SelectNodes("//img"))
             {
                 //make sure the attribute id is valid.
@@ -347,6 +354,7 @@ namespace Mango_Engine
                     break;
                 }
             }
+            */
 
             if (comic_node == null)
             {

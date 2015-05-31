@@ -46,7 +46,7 @@ namespace Mango_WinForm
             {
                 //Create a new instance of the mango source.
                 DetailedProgress_Box.AppendText( "Checking Source... \n");
-                Mango_Source my_source = new FakkuMango_Source(SourceUrl_Box.Text);
+                Mango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
                 await my_source.initAsync();
 
                 //Source is OK, create downloader
