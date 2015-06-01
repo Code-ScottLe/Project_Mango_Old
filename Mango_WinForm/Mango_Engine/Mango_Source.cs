@@ -109,6 +109,14 @@ namespace Mango_Engine
                 _encoding_type = value;
             }
         }
+
+        public static Mango_Source_Factory Factory
+        {
+            get
+            {
+                return new Mango_Source_Factory();
+            }
+        }
         #endregion
 
         #region Constructor
