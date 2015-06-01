@@ -20,9 +20,8 @@ namespace Mango_WinForm
             InitializeComponent();
 
             //Set up combo boxes with sources
-            //Add the officially supported Mango source here.
-            SourcesList_ComboBox.Items.Add("Batoto");
-            SourcesList_ComboBox.Items.Add("Fakku");
+            add_official_source();
+
         }
 
         private void SaveTo_Button_Click(object sender, EventArgs e)
@@ -79,6 +78,19 @@ namespace Mango_WinForm
             (new Form2()).Show();
         }
 
+        private void iSwearThatIm18OrOlderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Get them the goodies.
+            add_official_H_source();
+
+            //Adjust UI
+            iSwearThatIm18OrOlderToolStripMenuItem.Enabled = false;
+            Form3 lewd = new Form3();
+            lewd.Show();
+
+
+        }
+
         #endregion
 
         #region Custom Methods
@@ -109,8 +121,20 @@ namespace Mango_WinForm
             DetailedProgress_Box.AppendText("Completed!\n");
         }
 
+        private void add_official_source()
+        {
+            //Add the officially supported Mango source here.
+            SourcesList_ComboBox.Items.Add("Batoto");
+        }
 
+        private void add_official_H_source()
+        {
+            //Add the officially supported H Mango source here.
+            SourcesList_ComboBox.Items.Add("Fakku");
+        }
 
         #endregion
+
+       
     }
 }

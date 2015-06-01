@@ -41,6 +41,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.iSwearThatIm18OrOlderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DetailedProgress_Box = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -74,6 +75,7 @@
             // 
             // SourcesList_Label
             // 
+            this.SourcesList_Label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SourcesList_Label.AutoSize = true;
             this.SourcesList_Label.Location = new System.Drawing.Point(780, 31);
             this.SourcesList_Label.Name = "SourcesList_Label";
@@ -152,7 +154,8 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1});
+            this.aboutToolStripMenuItem1,
+            this.iSwearThatIm18OrOlderToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.aboutToolStripMenuItem.Text = "Help";
@@ -160,9 +163,16 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(213, 22);
             this.aboutToolStripMenuItem1.Text = "About";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            // 
+            // iSwearThatIm18OrOlderToolStripMenuItem
+            // 
+            this.iSwearThatIm18OrOlderToolStripMenuItem.Name = "iSwearThatIm18OrOlderToolStripMenuItem";
+            this.iSwearThatIm18OrOlderToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.iSwearThatIm18OrOlderToolStripMenuItem.Text = "I swear that I\'m 18 or older";
+            this.iSwearThatIm18OrOlderToolStripMenuItem.Click += new System.EventHandler(this.iSwearThatIm18OrOlderToolStripMenuItem_Click);
             // 
             // DetailedProgress_Box
             // 
@@ -222,6 +232,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
         private System.Windows.Forms.RichTextBox DetailedProgress_Box;
+        private System.Windows.Forms.ToolStripMenuItem iSwearThatIm18OrOlderToolStripMenuItem;
     }
 }
 
