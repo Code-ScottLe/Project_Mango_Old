@@ -13,6 +13,7 @@ namespace Mango_WinForm
 {
     public partial class Form1 : Form
     {
+        #region WinForm Methods
         public Form1()
         {
             //initialize the window
@@ -21,7 +22,7 @@ namespace Mango_WinForm
             //Set up combo boxes with sources
             //Add the officially supported Mango source here.
             SourcesList_ComboBox.Items.Add("Batoto");
-            SourcesList_ComboBox.Items.Add("Generic Source");
+            SourcesList_ComboBox.Items.Add("Fakku");
         }
 
         private void SaveTo_Button_Click(object sender, EventArgs e)
@@ -40,33 +41,28 @@ namespace Mango_WinForm
 
         private async void Download_Button_Click(object sender, EventArgs e)
         {
-            //Start the download.
+            /*User Initalize the Download.*/
+
+            //Reset the Progress bar.
             progressBar1.Value = 0;
             try
             {
-                //Create a new instance of the mango source.
                 DetailedProgress_Box.AppendText( "Checking Source... \n");
-                BatotoMango_Source my_source = new BatotoMango_Source(SourceUrl_Box.Text);
-                await my_source.initAsync();
-
-                //Source is OK, create downloader
-                DetailedProgress_Box.AppendText("Initalize Downloader... \n");
-                Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
-
-                //Everything is good. Start downloading.
-                DetailedProgress_Box.AppendText( "Downloading...\n.\n.\n.\n");
-                do
+                if(SourcesList_ComboBox.SelectedItem == null)
                 {
-                    await my_downloader.DownloadCurrentPageAsync();
-                    DetailedProgress_Box.AppendText(my_downloader.current_filename + " downloaded\n");
-                    int completed = my_downloader.completed_percentage();
-                    progressBar1.Value = completed;
-               
-                } while ( await my_downloader.get_next_page_Async() == true);
+                    //User has not choosen the source
+                    DetailedProgress_Box.AppendText("Please choose the source from the Source list!\n");
+                    throw new MangoException("Can't Initialize Mango_Source! Null Source");
+                }
 
-                //everything is good. 
-                progressBar1.Value = 100;
-                DetailedProgress_Box.AppendText("Completed!\n");
+                if(string.IsNullOrEmpty(SourceUrl_Box.Text))
+                {
+                    //User has not provided the URL
+                    DetailedProgress_Box.AppendText("Please enter the URL to download!");
+                    throw new MangoException("Can't Initalize Mango_Source! Null URL");
+                }
+
+                await DownloadAsync();
             }
             
             catch (Exception ex)
@@ -82,5 +78,39 @@ namespace Mango_WinForm
             //About the program.
             (new Form2()).Show();
         }
+
+        #endregion
+
+        #region Custom Methods
+
+        private async Task DownloadAsync()
+        {
+            //Try to initialize the source.
+            DetailedProgress_Box.AppendText("Initalize Mango Source... \n");
+            Mango_Source my_source = await Mango_Source.Factory.get_new_Async(SourcesList_ComboBox.SelectedItem.ToString(), SourceUrl_Box.Text);
+
+            //Source is OK, create downloader
+            DetailedProgress_Box.AppendText("Initalize Downloader... \n");
+            Mango_Downloader my_downloader = new Mango_Downloader(my_source, SaveTo_TextBox.Text);
+
+            //Everything is good. Start downloading.
+            DetailedProgress_Box.AppendText("Downloading...\n.\n.\n.\n");
+            do
+            {
+                await my_downloader.DownloadCurrentPageAsync();
+                DetailedProgress_Box.AppendText(my_downloader.current_filename + " downloaded\n");
+                int completed = my_downloader.completed_percentage();
+                progressBar1.Value = completed;
+
+            } while (await my_downloader.get_next_page_Async() == true);
+
+            //everything is good. 
+            progressBar1.Value = 100;
+            DetailedProgress_Box.AppendText("Completed!\n");
+        }
+
+
+
+        #endregion
     }
 }
