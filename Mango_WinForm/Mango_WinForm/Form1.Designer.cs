@@ -35,13 +35,13 @@
             this.SaveTo_TextBox = new System.Windows.Forms.TextBox();
             this.SaveTo_Label = new System.Windows.Forms.Label();
             this.SaveTo_Button = new System.Windows.Forms.Button();
-            this.DetailedProgress_Box = new System.Windows.Forms.TextBox();
             this.DetailedProgress_TextBox = new System.Windows.Forms.Label();
             this.Download_Button = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.DetailedProgress_Box = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,23 +104,11 @@
             this.SaveTo_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SaveTo_Button.Location = new System.Drawing.Point(897, 145);
             this.SaveTo_Button.Name = "SaveTo_Button";
-            this.SaveTo_Button.Size = new System.Drawing.Size(90, 30);
+            this.SaveTo_Button.Size = new System.Drawing.Size(90, 23);
             this.SaveTo_Button.TabIndex = 6;
             this.SaveTo_Button.Text = "...";
             this.SaveTo_Button.UseVisualStyleBackColor = true;
             this.SaveTo_Button.Click += new System.EventHandler(this.SaveTo_Button_Click);
-            // 
-            // DetailedProgress_Box
-            // 
-            this.DetailedProgress_Box.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DetailedProgress_Box.Location = new System.Drawing.Point(13, 231);
-            this.DetailedProgress_Box.Multiline = true;
-            this.DetailedProgress_Box.Name = "DetailedProgress_Box";
-            this.DetailedProgress_Box.ReadOnly = true;
-            this.DetailedProgress_Box.Size = new System.Drawing.Size(977, 336);
-            this.DetailedProgress_Box.TabIndex = 7;
             // 
             // DetailedProgress_TextBox
             // 
@@ -172,19 +160,32 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem1.Text = "About";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            // 
+            // DetailedProgress_Box
+            // 
+            this.DetailedProgress_Box.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DetailedProgress_Box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DetailedProgress_Box.Location = new System.Drawing.Point(13, 214);
+            this.DetailedProgress_Box.Name = "DetailedProgress_Box";
+            this.DetailedProgress_Box.ReadOnly = true;
+            this.DetailedProgress_Box.Size = new System.Drawing.Size(974, 376);
+            this.DetailedProgress_Box.TabIndex = 12;
+            this.DetailedProgress_Box.Text = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1002, 644);
+            this.Controls.Add(this.DetailedProgress_Box);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Download_Button);
             this.Controls.Add(this.DetailedProgress_TextBox);
-            this.Controls.Add(this.DetailedProgress_Box);
             this.Controls.Add(this.SaveTo_Button);
             this.Controls.Add(this.SaveTo_Label);
             this.Controls.Add(this.SaveTo_TextBox);
@@ -214,13 +215,13 @@
         private System.Windows.Forms.TextBox SaveTo_TextBox;
         private System.Windows.Forms.Label SaveTo_Label;
         private System.Windows.Forms.Button SaveTo_Button;
-        private System.Windows.Forms.TextBox DetailedProgress_Box;
         private System.Windows.Forms.Label DetailedProgress_TextBox;
         private System.Windows.Forms.Button Download_Button;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
+        private System.Windows.Forms.RichTextBox DetailedProgress_Box;
     }
 }
 
