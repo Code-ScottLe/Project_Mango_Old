@@ -11,7 +11,7 @@ using System.Net.Http;
 
 namespace Mango_Engine
 {
-    public class BatotoMango_Source : Mango_Source
+    public class BatotoMangoSource : MangoSource
     {
         #region Fields
         //Fields
@@ -25,7 +25,7 @@ namespace Mango_Engine
 
         #region Constructors
         //Constructors
-        BatotoMango_Source() : base()
+        BatotoMangoSource() : base()
         {
             //default constructor, call base constructor.
             source_name = "Batoto";
@@ -34,7 +34,7 @@ namespace Mango_Engine
 
         }
 
-        public BatotoMango_Source(string url_source) : base()
+        public BatotoMangoSource(string url_source) : base()
         {
             //Create a new instace of BatotoMango_Source, an object represent bato.to source for mango.
             source_name = "Batoto";

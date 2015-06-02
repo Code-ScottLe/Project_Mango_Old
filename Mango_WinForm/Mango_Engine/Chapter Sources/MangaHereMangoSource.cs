@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Mango_Engine
 {
-    public class MangaHereMango_Source : Mango_Source
+    public class MangaHereMangoSource : MangoSource
     {
         #region Fields
         /*Fields*/
@@ -24,7 +24,7 @@ namespace Mango_Engine
         #region Constructor
         /*Constructors*/
 
-        MangaHereMango_Source() : base()
+        MangaHereMangoSource() : base()
         {
             //default constructor. Call base.
             _source_name = "MangaHere";
@@ -32,7 +32,7 @@ namespace Mango_Engine
             _current_page_index = 0;
         }
 
-        public MangaHereMango_Source(string url_source) : base(url_source)
+        public MangaHereMangoSource(string url_source) : base(url_source)
         {
             //Create a new instace of MangaHereMango_Source, an object represent mangahere.co source for mango.
             _source_name = "MangaHere";

@@ -9,7 +9,7 @@ using HtmlAgilityPack;
 
 namespace Mango_Engine
 {
-    public class FakkuMango_Source : Mango_Source
+    public class FakkuMangoSource : MangoSource
     {
         /* Represent a Mango Source from Fakku*/
 
@@ -25,7 +25,7 @@ namespace Mango_Engine
 
         #region Constructor
         /*Constructor*/
-        FakkuMango_Source() : base()
+        FakkuMangoSource() : base()
         {
             //Default constructor, call base constructor
             _source_name = "Fakku";
@@ -33,7 +33,7 @@ namespace Mango_Engine
             _img_source = string.Empty;
         }
 
-        public FakkuMango_Source(string url_source) : base(url_source)
+        public FakkuMangoSource(string url_source) : base(url_source)
         {
             //Create new instance of the FakkuMango_Source with a valid URL link.
             _source_name = "Fakku";

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mango_Engine
 {
-    public class Mango_Source_Factory
+    public class MangoSourceFactory
     {
         #region Fields
         /*Fields*/
@@ -22,21 +22,21 @@ namespace Mango_Engine
 
         #region Methods
         /*Methods*/
-        public Mango_Source get_new(string source_name, string source_url)
+        public MangoSource get_new(string source_name, string source_url)
         {
             /*Return back the correct instance of the corresponding source type (sync)*/
-            Mango_Source source = null;
+            MangoSource source = null;
 
             switch(source_name)
             {
                 case "Batoto":
-                    source = new BatotoMango_Source(source_url);
+                    source = new BatotoMangoSource(source_url);
                     break;
                 case "Fakku":
-                    source = new FakkuMango_Source(source_url);
+                    source = new FakkuMangoSource(source_url);
                     break;
                 case "MangaHere":
-                    source = new MangaHereMango_Source(source_url);
+                    source = new MangaHereMangoSource(source_url);
                     break;                 
             }
 
@@ -52,22 +52,22 @@ namespace Mango_Engine
             return source;
         }
 
-        public async Task<Mango_Source> get_new_Async(string source_name, string source_url)
+        public async Task<MangoSource> get_new_Async(string source_name, string source_url)
         {
             /*Return back the correct instance of the corresponding source type (async)*/
-            Mango_Source source = null;
+            MangoSource source = null;
 
             switch (source_name)
             {
                 case "Batoto":
-                    source = new BatotoMango_Source(source_url);
+                    source = new BatotoMangoSource(source_url);
                     break;
                 case "Fakku":
-                    source = new FakkuMango_Source(source_url);
+                    source = new FakkuMangoSource(source_url);
                     break;
 
                 case "MangaHere":
-                    source = new MangaHereMango_Source(source_url);
+                    source = new MangaHereMangoSource(source_url);
                     break;            
             }
 

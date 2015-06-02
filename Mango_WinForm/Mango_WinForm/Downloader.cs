@@ -12,14 +12,14 @@ namespace Mango_WinForm
     {
         #region Fields
         //Fields
-        private Mango_Source _html;
+        private MangoSource _html;
         private string _save_to;
         private int _downloaded_count;
         #endregion
 
         #region Properties
         //Properties
-        public Mango_Source source_html
+        public MangoSource source_html
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Mango_WinForm
 
         }
 
-        public Mango_Downloader(Mango_Source html, string local_uri)
+        public Mango_Downloader(MangoSource html, string local_uri)
         {
             //Create a downloader for Mango, accept in a string of HTML (source) and the local path (where to save)
             source_html = html;

@@ -16,7 +16,7 @@ namespace Mango_Engine
         string get_image_url();
     }
 
-    public abstract class  Mango_Source : M_Source
+    public abstract class  MangoSource : M_Source
     {
         //Represent a source for Mango.
 
@@ -110,18 +110,18 @@ namespace Mango_Engine
             }
         }
 
-        public static Mango_Source_Factory Factory
+        public static MangoSourceFactory Factory
         {
             get
             {
-                return new Mango_Source_Factory();
+                return new MangoSourceFactory();
             }
         }
         #endregion
 
         #region Constructor
         //Constructor
-        protected Mango_Source()
+        protected MangoSource()
         {
             //default constructor, hidden.
             _url = string.Empty;
@@ -132,7 +132,7 @@ namespace Mango_Engine
             _encoding_type = Encoding.UTF8;     //default encoding.
         }
 
-        protected Mango_Source(string url_source) : this()
+        protected MangoSource(string url_source) : this()
         {
             //Create a new instance of Mango_Source, representing a source for Mango, accept a string of URL.
             _url = _base_url = url_source;

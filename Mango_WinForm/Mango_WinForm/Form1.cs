@@ -99,7 +99,7 @@ namespace Mango_WinForm
         {
             //Try to initialize the source.
             DetailedProgress_Box.AppendText("Initalize Mango Source... \n");
-            Mango_Source my_source = await Mango_Source.Factory.get_new_Async(SourcesList_ComboBox.SelectedItem.ToString(), SourceUrl_Box.Text);
+            MangoSource my_source = await MangoSource.Factory.get_new_Async(SourcesList_ComboBox.SelectedItem.ToString(), SourceUrl_Box.Text);
 
             //Source is OK, create downloader
             DetailedProgress_Box.AppendText("Initalize Downloader... \n");

@@ -44,12 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chapter Sources\BatotoMango_Source.cs" />
-    <Compile Include="Chapter Sources\FakkuMango_Source.cs" />
-    <Compile Include="Chapter Sources\MangaHereMango_Source.cs" />
+    <Compile Include="Chapter Sources\BatotoMangoSource.cs" />
+    <Compile Include="Chapter Sources\FakkuMangoSource.cs" />
+    <Compile Include="Chapter Sources\MangaHereMangoSource.cs" />
     <Compile Include="Exceptions\MangoException.cs" />
-    <Compile Include="Chapter Sources\Mango_Source.cs" />
-    <Compile Include="Factory Methods\Mango_Source_Factory.cs" />
+    <Compile Include="Chapter Sources\MangoSource.cs" />
+    <Compile Include="Factory Methods\MangoSourceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
