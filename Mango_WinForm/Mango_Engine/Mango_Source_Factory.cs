@@ -35,6 +35,9 @@ namespace Mango_Engine
                 case "Fakku":
                     source = new FakkuMango_Source(source_url);
                     break;
+                case "MangaHere":
+                    source = new MangaHereMango_Source(source_url);
+                    break;                 
             }
 
             if(source == null)
@@ -62,6 +65,10 @@ namespace Mango_Engine
                 case "Fakku":
                     source = new FakkuMango_Source(source_url);
                     break;
+
+                case "MangaHere":
+                    source = new MangaHereMango_Source(source_url);
+                    break;            
             }
 
             if (source == null)

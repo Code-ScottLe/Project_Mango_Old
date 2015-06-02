@@ -212,22 +212,22 @@ namespace Mango_Engine
 
         public static Encoding string_to_encoding(string encoding_str)
         {
-            if(encoding_str == "UTF-8")
+            if(encoding_str == "UTF-8" || encoding_str == "utf-8")
             {
                 return Encoding.UTF8;
             }
 
-            else if (encoding_str == "UTF-7")
+            else if (encoding_str == "UTF-7" || encoding_str == "utf-7")
             {
                 return Encoding.UTF7;
             }
 
-            else if (encoding_str == "ASCII")
+            else if (encoding_str == "ASCII" || encoding_str == "ascii")
             {
                 return Encoding.ASCII;
             }
 
-            else if (encoding_str == "Unicode")
+            else if (encoding_str == "Unicode" || encoding_str == "unicode")
             {
                 return Encoding.Unicode;
             }

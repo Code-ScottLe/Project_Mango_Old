@@ -125,6 +125,7 @@ namespace Mango_WinForm
         {
             //Add the officially supported Mango source here.
             SourcesList_ComboBox.Items.Add("Batoto");
+            SourcesList_ComboBox.Items.Add("MangaHere");
         }
 
         private void add_official_H_source()
