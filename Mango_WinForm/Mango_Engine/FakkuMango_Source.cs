@@ -33,11 +33,10 @@ namespace Mango_Engine
             _img_source = string.Empty;
         }
 
-        public FakkuMango_Source(string url_source) : base()
+        public FakkuMango_Source(string url_source) : base(url_source)
         {
             //Create new instance of the FakkuMango_Source with a valid URL link.
             _source_name = "Fakku";
-            _url = _base_url = url_source;
             _current_page_index = 0;
             _img_source = string.Empty;
         }
@@ -54,6 +53,9 @@ namespace Mango_Engine
 
             //set the timeout of the client (30 secs)
             my_client.Timeout = new TimeSpan(0, 0, 30);
+
+            //Fix the URL string if need to.
+            url_handler();
 
             try
             {
@@ -158,6 +160,9 @@ namespace Mango_Engine
 
             //set the timeout of the client (30 secs)
             my_client.Timeout = new TimeSpan(0, 0, 30);
+
+            //Fix the URL string if need to.
+            url_handler();
 
             try
             {
@@ -297,6 +302,18 @@ namespace Mango_Engine
             return base.get_file_name(src_url);
         }
 
+        private void url_handler()
+        {
+            //Handle the case where the user might choose something elser rather than the chapter page.           
+
+            if (current_url.Contains("/read#page") || current_url.Contains("/read"))
+            {
+                //Not the last in the URL string.
+                int last_slash = current_url.LastIndexOf('/');
+                string sub_url = current_url.Substring(0, last_slash);
+                current_url = sub_url;
+            }
+        }
         #endregion 
 
     }
