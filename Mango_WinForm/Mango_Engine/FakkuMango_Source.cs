@@ -249,11 +249,6 @@ namespace Mango_Engine
             return await Task.Factory.StartNew<bool>(() => next_page());
         }
 
-        public override string get_url()
-        {
-            return current_url;
-        }
-
         public override string get_image_url()
         {
             /*Get the Image URL from the page out for downloading sync*/

@@ -241,7 +241,10 @@ namespace Mango_Engine
 
         abstract public Task<bool> next_page_Async();
 
-        abstract public string get_url();
+        public virtual string get_url()
+        {
+            return current_url;
+        }
 
         abstract public string get_image_url();
 
