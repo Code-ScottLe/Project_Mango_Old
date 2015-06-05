@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using HtmlAgilityPack;
 using System.IO;
+using System.IO.Compression;
 
 namespace Mango_Engine
 {
@@ -150,9 +152,12 @@ namespace Mango_Engine
                 /*Get a stream to the Source HTML file.*/
                 Stream source_html = await my_client.GetStreamAsync(current_url);
 
+                //The Website is coded in GZip Compression. Decompress the stream
+                GZipStream sourceStream = new GZipStream(source_html,CompressionMode.Decompress);
+
                 /*Load up the source stream as HTML*/
                 HtmlDocument my_doc = new HtmlDocument();
-                my_doc.Load(source_html, encoding_type);
+                my_doc.Load(sourceStream, encoding_type);
 
                 //Search for the SelectBox for the number of pages and all the pages links.
                 HtmlNode select_node = my_doc.DocumentNode.SelectSingleNode("//select[@class = \"wid60\"]");
@@ -206,14 +211,30 @@ namespace Mango_Engine
         {
             /*parse the html file and get the picture url out.*/
 
+            //Verify if the content of MangaHere is encoded or not.
+            Task<bool> is_gziped = is_GZippedAsync(current_url);
+
             /*Get a stream to the Source HTML.*/
             HttpClient my_client = new HttpClient();
             var get_stream_asynced_task = my_client.GetStreamAsync(current_url);
             get_stream_asynced_task.Wait();
 
+            Stream sourceStream = null;
+
+            if (is_gziped.Result)
+            {
+                //The Website is coded in GZip Compression for the 1st page. Decompress the stream
+                sourceStream = new GZipStream(get_stream_asynced_task.Result, CompressionMode.Decompress);
+            }
+
+            else
+            {
+                sourceStream = get_stream_asynced_task.Result;
+            }                           
+
             /*Load up the temp html file.*/
             HtmlDocument my_doc = new HtmlDocument();
-            my_doc.Load(get_stream_asynced_task.Result, encoding_type);
+            my_doc.Load(sourceStream, encoding_type);
 
             //Batoto use the <img id="comic_page" ... > to hold the source.
             //Search among all the img tags for the correct node.
@@ -288,6 +309,47 @@ namespace Mango_Engine
             return filename;
         }
 
+        public static bool is_GZipped(string url)
+        {
+            /*Check if the given URL is GZipped or not.*/
+
+            //Initalize the Client for getting response.
+            HttpClient myClient = new HttpClient();
+
+            //Get the Response.
+            HttpResponseMessage myMessage = myClient.GetAsync(url).Result;
+
+            //Check the Content-Encoding.
+            if (myMessage.Content.Headers.ContentEncoding.ElementAt(0) == "gzip")
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        public static async Task<bool> is_GZippedAsync(string url)
+        {
+            /*Check if the given URL is GZipped or not.*/
+
+            //Initalize the Client for getting response.
+            HttpClient myClient = new HttpClient();
+
+            //Get the Response.
+            HttpResponseMessage myMessage = await myClient.GetAsync(url);
+
+            //Check the Content-Encoding.
+
+
+            if (myMessage.Content.Headers.ContentEncoding.Contains("gzip"))
+            {
+                return true;
+            }  
+            
+
+            return false;
+        }
         #endregion
     }
 }
