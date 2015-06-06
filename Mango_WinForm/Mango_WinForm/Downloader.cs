@@ -8,6 +8,71 @@ using Mango_Engine;
 
 namespace Mango_WinForm
 {
+
+    public class MangoDownloaderEventArg : EventArgs
+    {
+        /*Represent the EventArg for the downloader events.*/
+
+        #region Fields
+        /*Fields*/
+        #endregion
+
+        #region Properties
+        /*Properties*/
+        #endregion
+
+        #region Constructors
+        /*Constructors*/
+        #endregion
+
+        #region Methods
+        /*Methods*/
+        #endregion
+
+    }
+
+    public class MangoDownloader
+    {
+        #region Fields
+        /*Fields*/
+        private MangoSource _source;
+        private string _saveLocation;
+        private int _downloadCount;
+        private WebClient _downloadClient;
+
+        #endregion
+
+        #region Properties
+
+        /*Properties*/
+
+        public int downloadCount
+        {
+            get
+            {
+                return _downloadCount;
+            }
+        }
+
+        public string saveLocation
+        {
+            get { return _saveLocation; }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        /*Constructors*/
+
+        #endregion
+
+        #region Methods
+
+        /*Methods*/
+
+        #endregion
+    }
     public class Mango_Downloader
     {
         #region Fields
