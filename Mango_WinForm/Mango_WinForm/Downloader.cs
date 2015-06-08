@@ -4,32 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Runtime.InteropServices;
 using Mango_Engine;
 
 namespace Mango_WinForm
 {
-
-    public class MangoDownloaderEventArg : EventArgs
+    //Custom EventArgs for the Events inside the downloader.
+    public class DownloadProgressChangedEventArg : EventArgs
     {
-        /*Represent the EventArg for the downloader events.*/
+        public string PreviousDownloaded { get; set; }
 
-        #region Fields
-        /*Fields*/
-        #endregion
+        public int DownloadedPercentage { get; set; }
 
-        #region Properties
-        /*Properties*/
-        #endregion
+        public DownloadProgressChangedEventArg(string file_name, int caluclated_percentage)
+        {
+            PreviousDownloaded = file_name;
+            DownloadedPercentage = caluclated_percentage;
+        }
+    }
 
-        #region Constructors
-        /*Constructors*/
-        #endregion
+    public class DownloadCompletedEventArg : EventArgs
+    {
+        public int DownloadCount { get; set; }
+        public string SaveLocation { get; set; }
 
-        #region Methods
-        /*Methods*/
-        #endregion
+        public DownloadCompletedEventArg(int downloadcount, string savelocation)
+        {
+            DownloadCount = downloadcount;
+            SaveLocation = savelocation;
+        }
 
     }
+
+    //Delegate for the Event Handlers of the MangaDownloader.
+    public delegate void DownloadProgressChangedEventHandler(object sender, DownloadProgressChangedEventArg e);
+
+    public delegate void DownloadCompletedEventHandler(object sender, DownloadCompletedEventArg e);
 
     public class MangoDownloader
     {
@@ -58,6 +68,13 @@ namespace Mango_WinForm
         {
             get { return _saveLocation; }
         }
+
+        #endregion
+
+        #region Events
+        /*Events*/
+        public event DownloadProgressChangedEventHandler downloadProgressChanged;
+        public event DownloadCompletedEventHandler downloadCompleted;
 
         #endregion
 
