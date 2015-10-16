@@ -1,3 +1,5 @@
 # Project_Mango
 A Mango. 
-Project now is being continued on Visual Studio Online. This page will be updated later.
+
+Version 1 has been discontinued. Please follow this link for newer version:
+https://github.com/Code-ScottLe/MangoDownloader
